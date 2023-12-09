@@ -1,0 +1,330 @@
+table.dataTable thead .sorting{
+    background: none;
+}
+
+table.dataTable thead .sorting_asc{
+    background: none;
+}
+
+table.dataTable thead .sorting_desc{
+    background: none;
+}
+.control-bar{
+    background: none;
+    border: none;
+}
+
+.control-bar .right-control{
+    text-align: right;
+}
+
+.control-bar button{
+    padding: 8px 25px;
+    background-color: #67809F;
+}
+
+.control-bar {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.list-grid{
+    padding-top: 10px;
+}
+
+.main-content-inner .mt-5{
+    margin-top: 2rem !important;
+}
+
+table.dataTable.no-footer{
+    width: 100% !important;
+}
+
+
+@media (max-width: 735px) {
+    .control-bar button.btn{
+       padding: 8px 23px;
+    }
+}
+
+@media (max-width: 600px) {
+   .control-bar .control .left-control,
+   .control-bar .control .right-control{
+      max-width: 100%;
+      flex: 0 0 100%;
+   }
+   
+   .control-bar button.btn{
+    font-size: 11px;
+   }
+   
+   .control-bar .left-control,
+   .control-bar .right-control{
+    text-align: center;
+   }
+
+   .page-title-area .row.align-items-center .col-sm-6{
+       width: 50%;
+   }
+
+   table.dataTable tbody td{
+      text-align: left;
+   }
+}
+
+@media (max-width: 479px) {
+   .page-title-area .row.align-items-center .col-sm-6{
+       width: 100%;
+   }
+
+   .page-title-area .row.align-items-center .col-sm-6 .page-title.pull-left{
+       width: 100%;
+       text-align: center;
+   }
+
+   .page-title-area .row.align-items-center .col-sm-6 .pull-right{
+       float: none;
+   }
+}
+
+@media (max-width: 340px){
+    .control-bar button.btn{
+        font-size: 8px !important;
+    }
+
+}
+
+@media (min-width: 341px) and (max-width: 372px) {
+    .control-bar button.btn{
+        font-size: 10px !important;
+    }
+
+}
+@media (max-width: 550px) and (min-width: 320px){
+    .notification-area{
+        text-align: left !important;
+        float: none !important;
+        margin-top: 10px;
+    }
+ 
+    .notification-area li:nth-child(1){
+        margin: 0 !important;
+    }
+}
+
+/* Status Switch CSS */
+
+.switch{
+    opacity: 0;
+    position: absolute;
+    z-index: 1;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  .switch + .lable{
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    line-height: 20px;
+    min-height: 18px;
+    min-width: 18px;
+    font-weight: normal;
+    cursor: pointer;
+  }
+  .switch + .lable::before{
+    cursor: pointer;
+    font-family: fontAwesome;
+    font-weight: normal;
+    font-size: 12px;
+    color: #32a3ce;
+    content: "\a0";
+    background-color: #FAFAFA;
+    border: 1px solid #c8c8c8;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 0;
+    display: inline-block;
+    text-align: center;
+    height: 16px;
+    line-height: 14px;
+    min-width: 16px;
+    margin-right: 1px;
+    position: relative;
+    top: -1px;
+  }
+  .switch:checked + .lable::before {
+    display: inline-block;
+    content: '\f00c';
+    background-color: #F5F8FC;
+    border-color: #adb8c0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+  }
+  /* CSS3 on/off switches */
+  .switch + .lable {
+    margin: 0 4px;
+    min-height: 24px;
+  }
+  .switch + .lable::before {
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 17px;
+    height: 20px;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: #F5F5F5;
+    -webkit-box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.15);
+    border: 1px solid #CCC;
+    text-align: left;
+    float: left;
+    padding: 0;
+    width: 52px;
+    text-indent: -21px;
+    margin-right: 0;
+    -webkit-transition: text-indent .3s ease;
+    -o-transition: text-indent .3s ease;
+    transition: text-indent .3s ease;
+    top: auto;
+  }
+  .switch.switch-bootstrap + .lable::before {
+    font-family: FontAwesome;
+    content: "\f00d";
+    box-shadow: none;
+    border-width: 0;
+    font-size: 16px;
+    background-color: #a9a9a9;
+    color: #F2F2F2;
+    width: 52px;
+    height: 22px;
+    line-height: 21px;
+    text-indent: 32px;
+    -webkit-transition: background 0.1s ease;
+    -o-transition: background 0.1s ease;
+    transition: background 0.1s ease;
+  }
+  .switch.switch-bootstrap + .lable::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    border-radius: 12px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    background-color: #F2F2F2;
+    border: 4px solid #F2F2F2;
+    -webkit-transition: left 0.2s ease;
+    -o-transition: left 0.2s ease;
+    transition: left 0.2s ease;
+  }
+  .switch.switch-bootstrap:checked + .lable::before {
+    content: "\f00c";
+    text-indent: 6px;
+    color: #FFF;
+    border-color: #b7d3e5;
+    
+  }
+
+  .switch-success >.switch.switch-bootstrap:checked + .lable::before {
+      background-color: #5cb85c;
+  }
+  
+  .switch.switch-bootstrap:checked + .lable::after {
+    left: 32px;
+    background-color: #FFF;
+    border: 4px solid #FFF;
+    text-shadow: 0 -1px 0 rgba(0, 200, 0, 0.25);
+  }
+  
+  /* Status Switch CSS End */
+
+  /* Loader CSS */
+
+  .loading {
+    height: 0;
+    width: 0;
+    padding: 5px;
+    border: 3px solid #ccc;
+    border-right-color: #888;
+    border-radius: 22px;
+    -webkit-animation: rotate 1s infinite linear;
+    float: right;
+    display:none;
+}
+  
+  @-webkit-keyframes rotate {
+    /* 100% keyframe for  clockwise. 
+       use 0% instead for anticlockwise */
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+}
+
+.control-bar button.btn-danger{ 
+    background: #c82333;
+    border: 1px solid #bd2130;
+}
+
+.header-area{
+    padding: 9px 30px;
+}
+
+.nav-btn{
+  margin-top: 0;
+}
+
+.user-profile{
+  padding: 8px 38px;
+}
+
+.btn-sm {
+    padding: 5px 14px;
+}
+
+.dt-rowReorder-moving{
+  width: 300px;
+  max-width: 300px;
+  min-width: 300px;
+}
+
+@media (min-width: 1024px) {
+    .control-bar .left-control button.btn-danger{
+      position: relative;
+    }
+
+    .control-bar .left-control .loading {
+        position: absolute;
+        top: 11px;
+        right: 30%;
+    }
+}
+
+@media (min-width: 850px) and (max-width: 1023px) { 
+    .control-bar .left-control button.btn-danger{
+      position: relative;
+    }
+
+    .control-bar .left-control .loading {
+        position: absolute;
+        top: 11px;
+        right: 10%;
+    }
+}
+
+@media (max-width: 800px){
+    .control-bar .left-control button.btn-danger{
+      position: relative;
+    }
+
+    .control-bar .left-control .loading {
+        position: absolute;
+        top: 11px;
+        right: 15px;
+    }
+}
+
+.crete-account-sec table th{
+  padding: 10px;
+}
