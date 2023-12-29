@@ -344,8 +344,6 @@
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-layout-sidebar-left"></i><span>User
                             </span></a>
-
-
                         <ul class="collapse">
                             <li><a href="{{ url('/admin/user') }}">Manage Users</a></li>
                             <li><a href="{{ url('/admin/user/create') }}">Add User</a></li>
@@ -353,6 +351,18 @@
 
                         </ul>
                     </li>
+
+                    <li @if(isset($activeMenu)) @if($activeMenu=='role' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Role
+                            </span></a>
+
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/role') }}">Manage Role</a></li>
+                            <li><a href="{{ url('/admin/role/create') }}">Add Role</a></li>
+                        </ul>
+                    </li>
+
                     <li @if(isset($activeMenu)) @if($activeMenu=='website-management' ) class="active" @endif @endif>
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-layout-sidebar-left"></i><span>Website management

@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\QuestionCategoryController;
 use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\MeetingController;
 use App\Http\Controllers\admin\ContactController;
+use App\Http\Controllers\admin\RoleController;
 
 
 
@@ -121,6 +122,13 @@ Route::group(['middleware' => ['auth']], function () {
          Route::resource('admin/contact',ContactController::class);
      
          //Contact Routings ends
+
+         //Role Routings
+         Route::post('admin/role/updateSortorder',[RoleController::class,  'updateSortorder']);
+         Route::post('admin/role/destroyAll',[RoleController::class,  'destroyAll']);
+         Route::post('admin/role/updateStatus',[RoleController::class,'updateStatus']); 
+         Route::resource('admin/role',RoleController::class);
+         //Role Routings ends
 
 });
 
