@@ -16,7 +16,7 @@
                         <!-- <h4 class="header-title">Basic form</h4> -->
                          <p id="err" style="color:red;"></p>
 
-                        <form id="roleForm" method="post" action="@if(isset($editStatus)){{ route('role.update', $role->id) }} @else {{ route('role.store')}}@endif" enctype='multipart/form-data'>
+                        <form id="permissionHeadForm" method="post" action="@if(isset($editStatus)){{ route('permissionHead.update', $permissionHead->id) }} @else {{ route('permissionHead.store')}}@endif" enctype='multipart/form-data'>
 
                             {{ csrf_field() }}
 
@@ -40,22 +40,15 @@
 
                                 <div class="col-6 mt-5">
                                     <div class="form-group">
-                                        <label for="roleName">Role Name</label>
-                                        <input type="text" class="form-control" id="roleName" name="roleName" placeholder="Enter role" value="{{old('roleName',  isset($role->roleName) ? $role->roleName : NULL)}}">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter permission head name" value="{{old('name',  isset($permissionHead->name) ? $permissionHead->name : NULL)}}">
                                     </div>
                                 </div> 
                             </div>
-                            @foreach($permissionHead as $value)
-                            
-                            <div>
-                                <input type="checkbox" class="checkBoxClass" name="permissions[]" value="{{$value->id}}">  
-                                @isset($value->name){{$value->name}}@else NA @endif
-                            </div>
-                                    
-                            @endforeach
+
                            
-                            @if(isset($role->id))
-                            <input type="hidden" name="id" value="{{ $role->id }}">
+                            @if(isset($permissionHead->id))
+                            <input type="hidden" name="id" value="{{ $permissionHead->id }}">
                             @endif
                            
                             <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save</button>
@@ -69,19 +62,19 @@
 </div>
 
 @section('js')
-<script src="{{ asset('assets/admin/js/console/role.js') }}"></script>
+<script src="{{ asset('assets/admin/js/console/permissionHead.js') }}"></script>
 @append
 
 <script type="text/javascript">
 
  $(document).ready(function(){
 
-    $("#roleForm").submit(function(){
+    $("#permissionHeadForm").submit(function(){
 
-        if($("#roleName").val()=="")
+        if($("#name").val()=="")
         {
-            $("#err").text("Please enter role name");
-            $("#roleName").focus();
+            $("#err").text("Please enter permission head name");
+            $("#name").focus();
             return false;
         }
         });

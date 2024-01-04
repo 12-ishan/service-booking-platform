@@ -363,6 +363,19 @@
                         </ul>
                     </li>
 
+                    <li @if(isset($activeMenu)) @if($activeMenu=='permissionHead' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Permission Head
+                            </span></a>
+
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/permissionHead') }}">Manage</a></li>
+                            <li><a href="{{ url('/admin/permissionHead/create') }}">Add</a></li>
+                        </ul>
+                    </li>
+
+
+
                     <li @if(isset($activeMenu)) @if($activeMenu=='website-management' ) class="active" @endif @endif>
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-layout-sidebar-left"></i><span>Website management

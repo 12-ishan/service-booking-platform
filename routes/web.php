@@ -13,6 +13,8 @@ use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\MeetingController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\admin\PermissionHeadController;
+
 
 
 
@@ -129,6 +131,13 @@ Route::group(['middleware' => ['auth']], function () {
          Route::post('admin/role/updateStatus',[RoleController::class,'updateStatus']); 
          Route::resource('admin/role',RoleController::class);
          //Role Routings ends
+
+          //PermissionHead Routings
+          Route::post('admin/permissionHead/updateSortorder',[PermissionHeadController::class,  'updateSortorder']);
+          Route::post('admin/permissionHead/destroyAll',[PermissionHeadController::class,  'destroyAll']);
+          Route::post('admin/permissionHead/updateStatus',[PermissionHeadController::class,'updateStatus']); 
+          Route::resource('admin/permissionHead',PermissionHeadController::class);
+          //PermissionHead Routings ends
 
 });
 

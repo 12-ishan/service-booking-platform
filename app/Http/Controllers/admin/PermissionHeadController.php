@@ -4,12 +4,10 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Role;
 use App\Models\Admin\PermissionHead;
-use App\Models\Admin\RolePermission;
 use Illuminate\Support\Facades\Auth;
 
-class RoleController extends Controller
+class PermissionHeadController extends Controller
 {
     public function __construct()
     {
@@ -25,15 +23,12 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        
         $data = array();
-        $data["role"] = Role::orderBy('sortOrder')->get();
-        $data["pageTitle"] = 'Manage Role';
-        $data["activeMenu"] = 'role';
-        // echo '<pre>';
-        //     print_r($data);
-        //    echo '</pre>';
-        return view('admin.role.manage')->with($data);
+        $data["permissionHead"] = PermissionHead::orderBy('sortOrder')->get();
+        $data["pageTitle"] = 'Manage Permission Head';
+        $data["activeMenu"] = 'permissionHead';
+        return view('admin.permissionHead.manage')->with($data);
     }
 
     /**
@@ -43,14 +38,9 @@ class RoleController extends Controller
     {
         //
         $data = array();
-        $data["permissionHead"] = PermissionHead::orderBy('sortOrder')->get();
-        $data["pageTitle"] = 'Add Role';
-        $data["activeMenu"] = 'role';
-
-    //    echo '<pre>';
-    //      print_r($data);
-    //    die();
-        return view('admin.role.create')->with($data);
+        $data["pageTitle"] = 'Add Permission Head';
+        $data["activeMenu"] = 'permissionHead';
+        return view('admin.permissionHead.create')->with($data);
     }
 
     /**
@@ -60,34 +50,27 @@ class RoleController extends Controller
     {
         //
         $this->validate(request(), [
-            'roleName' => 'required',
+            'name' => 'required',
         ]);
 
-       $permission = $request->input('permissions');
-        $role = new Role();
-        $role->roleName = $request->input('roleName');
-        $role->status = 1;
-        $role->sortOrder = 1;
-        $role->increment('sortOrder');
-        $role->save();
-        $roleId = $role->id;
-        foreach($permission as $value){
+        $permissionHead = new PermissionHead();
 
-            $rolePermission = new RolePermission();
-            $rolePermission->roleId = $roleId;
-            $rolePermission->permissionId = $value;
-            $rolePermission->save(); 
-        }
-        return redirect()->route('role.index')->with('message', 'Role Added Successfully');
+        $permissionHead->name = $request->input('name');
+        $permissionHead->status = 1;
+        $permissionHead->sortOrder = 1;
+        $permissionHead->increment('sortOrder');
+        $permissionHead->save();
+        return redirect()->route('permissionHead.index')->with('message', 'permissionHead Added Successfully');
 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+       
+
     }
 
     /**
@@ -98,12 +81,11 @@ class RoleController extends Controller
         //
         $data = array();
 
-        $data['role'] = Role::find($id);
-
+        $data['permissionHead'] = PermissionHead::find($id);
         $data["editStatus"] = 1;
-        $data["pageTitle"] = 'Update Role';
-        $data["activeMenu"] = 'role';
-        return view('admin.role.create')->with($data);
+        $data["pageTitle"] = 'Update Permission Head';
+        $data["activeMenu"] = 'permissionHead';
+        return view('admin.permissionHead.create')->with($data);
     }
 
     /**
@@ -112,18 +94,15 @@ class RoleController extends Controller
     public function update(Request $request)
     {
         //
-        
         $this->validate(request(), [
-            'roleName' => 'required',
+            'name' => 'required',
         ]);
-        
         $id = $request->input('id');
 
-        $role = Role::find($id);
-
-        $role->roleName = $request->input('roleName');
-        $role->save();
-        return redirect()->route('role.index')->with('message', 'Role Updated Successfully');
+        $permissionHead = PermissionHead::find($id);
+        $permissionHead->name = $request->input('name');
+        $permissionHead->save();
+        return redirect()->route('permissionHead.index')->with('message', 'Permission Head Updated Successfully');
     }
 
     /**
@@ -133,8 +112,8 @@ class RoleController extends Controller
     {
         //
         $id = $request->id;
-        $role = Role::find($id);
-        $role->delete($id);
+        $permissionHead = PermissionHead::find($id);
+        $permissionHead->delete($id);
 
         return response()->json([
             'status' => 1,
@@ -149,13 +128,11 @@ class RoleController extends Controller
         $record = $request->input('deleterecords');
 
         if (isset($record) && !empty($record)) {
-
             foreach ($record as $id) {
-                $role = Role::find($id);
-                $role->delete();
+                $permissionHead = PermissionHead::find($id);
+                $permissionHead->delete();
             }
         }
-
         return response()->json([
             'status' => 1,
             'message' => 'Delete Successfull',
@@ -173,9 +150,9 @@ class RoleController extends Controller
             foreach ($decoded_data as $values) {
 
                 $id = $values->id;
-                $role = Role::find($id);
-                $role->sortOrder = $values->position;
-                $result = $role->save();
+                $permissionHead = PermissionHead::find($id);
+                $permissionHead->sortOrder = $values->position;
+                $result = $permissionHead->save();
             }
         }
 
@@ -188,18 +165,14 @@ class RoleController extends Controller
         return response()->json($response);
     }
 
-    /**
-     * Update Status resource from storage.
-     *
-     */
     public function updateStatus(Request $request)
     {
         $status = $request->status;
         $id = $request->id;
 
-        $role = Role::find($id);
-        $role->status = $status;
-        $result = $role->save();
+        $permissionHead = PermissionHead::find($id);
+        $permissionHead->status = $status;
+        $result = $permissionHead->save();
 
         if ($result) {
             $response = array('status' => 1, 'message' => 'Status updated', 'response' => '');
@@ -211,5 +184,3 @@ class RoleController extends Controller
     }
 
 }
-
-

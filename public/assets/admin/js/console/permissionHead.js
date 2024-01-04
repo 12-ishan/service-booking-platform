@@ -4,19 +4,19 @@ $(document).ready(function () {
 
     ///////////////////////////
 
-    $("#deleteAllRole").on('submit', (function (e) {
+    $("#deleteAllPermissionHead").on('submit', (function (e) {
         e.preventDefault();
 
         var length = $('.checkBoxClass:checked').length > 0;
         if (!length) {
 
             $("#messageModal").modal('show');
-            $("#messageBox").html('<p>No record selected please select Role.</p>');
+            $("#messageBox").html('<p>No record selected please select Permission Head.</p>');
             return false;
         }
 
         $.ajax({
-            url: '/admin/role/destroyAll',
+            url: '/admin/permissionHead/destroyAll',
             type: 'post',
             data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
             contentType: false,       // The content type used when sending data to the server.
@@ -39,7 +39,7 @@ $(document).ready(function () {
                         $('#item' + $(this).val()).hide();
                     });
                     $("#messageModal").modal('show');
-                    $("#messageBox").html('<p>Role information  deleted successfully</p>');
+                    $("#messageBox").html('<p>Permission Head information  deleted successfully</p>');
                 }
 
             }
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
     ///////////////////////////
 
-    var table = $('#roleTable').DataTable({
+    var table = $('#permissionHeadTable').DataTable({
         rowReorder: true,
         stateSave: true,
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
@@ -63,8 +63,6 @@ $(document).ready(function () {
 
     table.on('row-reorder', function (e, diff, edit) {
 
-        //   var result = 'Reorder started on row: '+edit.triggerRow.data()[1]+'<br>';
-
         var arr = [];
 
         for (var i = 0, ien = diff.length; i < ien; i++) {
@@ -75,18 +73,16 @@ $(document).ready(function () {
                 position: diff[i].newData
             });
 
-            // result += rowData[1]+' updated to be in position '+
-            // diff[i].newData+' (was '+diff[i].oldData+')<br>';
         }
 
         if (arr.length === 0) { return false; }
 
-        // console.log(JSON.stringify(arr));
+      
 
 
         $.ajax({
             type: 'POST',
-            url: '/admin/role/updateSortorder',
+            url: '/admin/permissionHead/updateSortorder',
             data: {
                 'records': JSON.stringify(arr)
             },
@@ -100,8 +96,7 @@ $(document).ready(function () {
 
                     $("#messageModal").modal('show');
                     $("#messageBox").html('<p>Order updated successfully.</p>');
-                    // $('#item' + Id).remove();
-                    //   $(".loading").hide();
+                    
 
                 } else {
 
@@ -138,7 +133,7 @@ $(document).ready(function () {
                 id: id,
                 status: status,
             },
-            url: '/admin/role/updateStatus',
+            url: '/admin/permissionHead/updateStatus',
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -195,7 +190,7 @@ function deleteRecord(id, title, message) {
                 id: id,
                 _method: "DELETE",
             },
-            url: '/admin/role/destroy',
+            url: '/admin/permissionHead/destroy',
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -212,7 +207,7 @@ function deleteRecord(id, title, message) {
 
                     $('#item' + id).hide();
                     $("#messageModal").modal('show');
-                    $("#messageBox").html('<p>Role information  deleted successfully</p>');
+                    $("#messageBox").html('<p>Permission Head information  deleted successfully</p>');
 
                 }
 

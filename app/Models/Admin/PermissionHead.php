@@ -4,11 +4,11 @@ namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class PermissionHead extends Model
 {
-    protected $table = 'role';
+    protected $table = 'permission_head';
 
-    public function permissionHead(){
+    public function role(){
         return $this->belongsToMany(RolePermission::class, 'role_permission');
     }
 }
