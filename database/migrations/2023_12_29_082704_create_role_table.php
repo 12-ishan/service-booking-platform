@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('role', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('roleName')->nullable();
+            $table->string('slug')->nullable();
             $table->tinyInteger('status');
             $table->integer('sortOrder');
             $table->timestamps();

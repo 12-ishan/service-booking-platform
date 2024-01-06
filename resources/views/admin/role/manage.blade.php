@@ -57,6 +57,7 @@
                                     <th width="5%">Seq.</th>
                                     <th style="width:2px;max-width:2px;"></th>
                                     <th>Role Name</th>
+                                    <th>URL</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -71,7 +72,9 @@
                                     </td>
 
                                     <td>@isset($value->roleName){{$value->roleName}}@else NA @endif</td>
+                                    <td>@isset($value->slug){{$value->slug}}@else NA @endif</td>
                                     
+
                                     <td> 
                 
                                         <label class="label-switch switch-success">
