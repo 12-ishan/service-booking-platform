@@ -26,11 +26,7 @@ class GenderController extends Controller
     {
         //
         $data = array();
-        $data["gender"] = Gender::where('organisationId', $this->organisationId)->orderBy('sortOrder')->get(); //all();
-        // echo "<pre>";
-        // print_r($data);
-        // die();
-
+        $data["gender"] = Gender::where('organisationId', $this->organisationId)->orderBy('sortOrder')->get();
         $data["pageTitle"] = 'Manage Gender';
         $data["activeMenu"] = 'master';
         $data["activeSubMenu"] = 'gender';
@@ -64,10 +60,6 @@ class GenderController extends Controller
         $gender = new Gender();
         $gender->name = $request->input('name');
         $gender->description = $request->input('description');
-        // echo "<pre>";
-        // print_r($gender);
-        // die();
-        //$gender->organisationId = $this->organisationId;
         $gender->status = 1;
         $gender->sortOrder = 1;
         $gender->increment('sortOrder');

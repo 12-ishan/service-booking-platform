@@ -26,11 +26,7 @@ class BloodGroupController extends Controller
     {
         //
         $data = array();
-        $data["bloodGroup"] = BloodGroup::where('organisationId', $this->organisationId)->orderBy('sortOrder')->get(); //all();
-        // echo "<pre>";
-        // print_r($data);
-        // die();
-
+        $data["bloodGroup"] = BloodGroup::where('organisationId', $this->organisationId)->orderBy('sortOrder')->get(); 
         $data["pageTitle"] = 'Manage Blood Group';
         $data["activeMenu"] = 'master';
         $data["activeSubMenu"] = 'bloodGroup';
@@ -63,10 +59,6 @@ class BloodGroupController extends Controller
         $bloodGroup = new BloodGroup();
         $bloodGroup->name = $request->input('name');
         $bloodGroup->description = $request->input('description');
-        // echo "<pre>";
-        // print_r($gender);
-        // die();
-        //$gender->organisationId = $this->organisationId;
         $bloodGroup->status = 1;
         $bloodGroup->sortOrder = 1;
         $bloodGroup->increment('sortOrder');
