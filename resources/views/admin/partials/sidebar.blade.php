@@ -230,6 +230,26 @@
                                 </ul>
                             </li>
                         </ul>
+
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='gender' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Gender</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/gender') }}">Manage Gender</a></li>
+                                    <li><a href="{{ url('/admin/gender/create') }}">Add Gender</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='bloodGroup' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Blood Group</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/bloodGroup') }}">Manage Blood Group</a></li>
+                                    <li><a href="{{ url('/admin/bloodGroup/create') }}">Add Blood Group</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
 
 

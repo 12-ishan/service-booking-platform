@@ -9,6 +9,7 @@ class Role extends Model
     protected $table = 'role';
 
     public function permissionHead(){
-        return $this->belongsToMany(RolePermission::class, 'role_permission');
+        
+        return $this->belongsTo(RolePermission::class, 'role_permission');
     }
 }

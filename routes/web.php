@@ -14,6 +14,8 @@ use App\Http\Controllers\admin\MeetingController;
 use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\PermissionHeadController;
+use App\Http\Controllers\admin\GenderController;
+use App\Http\Controllers\admin\BloodGroupController;
 
 
 
@@ -81,6 +83,25 @@ Route::group(['middleware' => ['auth']], function () {
      Route::resource('admin/time-slot', TimeSlotController::class);
  
      //Master/Time-Slot  Routings ends
+
+      //Gender Routings
+    
+      Route::post('admin/gender/updateSortorder',[ GenderController::class, 'updateSortorder']);
+      Route::post('admin/gender/destroyAll',[ GenderController::class, 'destroyAll']);
+      Route::post('admin/gender/updateStatus',[ GenderController::class, 'updateStatus']);
+      Route::resource('admin/gender', GenderController::class);
+  
+      //Gender Routings ends
+
+       //BloodGroup Routings
+    
+       Route::post('admin/bloodGroup/updateSortorder',[ BloodGroupController::class, 'updateSortorder']);
+       Route::post('admin/bloodGroup/destroyAll',[ BloodGroupController::class, 'destroyAll']);
+       Route::post('admin/bloodGroup/updateStatus',[ BloodGroupController::class, 'updateStatus']);
+       Route::resource('admin/bloodGroup', BloodGroupController::class);
+   
+       //BloodGroup Routings ends
+ 
 
      //Question Catgory Routings
     

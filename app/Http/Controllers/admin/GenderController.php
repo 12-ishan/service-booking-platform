@@ -4,22 +4,21 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Role;
-use App\Models\Admin\PermissionHead;
-use App\Models\Admin\RolePermission;
+use App\Models\Admin\Gender;
 use Illuminate\Support\Facades\Auth;
 
-class RoleController extends Controller
+class GenderController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             $this->userId = Auth::user()->id;
-            $this->accountId = Auth::user()->accountId;
+            $this->organisationId = Auth::user()->organisationId;    
             return $next($request);
         });
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -27,13 +26,15 @@ class RoleController extends Controller
     {
         //
         $data = array();
-        $data["role"] = Role::orderBy('sortOrder')->get();
-        $data["pageTitle"] = 'Manage Role';
-        $data["activeMenu"] = 'role';
-        // echo '<pre>';
-        //     print_r($data);
-        //    echo '</pre>';
-        return view('admin.role.manage')->with($data);
+        $data["gender"] = Gender::where('organisationId', $this->organisationId)->orderBy('sortOrder')->get(); //all();
+        // echo "<pre>";
+        // print_r($data);
+        // die();
+
+        $data["pageTitle"] = 'Manage Gender';
+        $data["activeMenu"] = 'master';
+        $data["activeSubMenu"] = 'gender';
+        return view('admin.gender.manage')->with($data);
     }
 
     /**
@@ -43,14 +44,11 @@ class RoleController extends Controller
     {
         //
         $data = array();
-        $data["permissionHead"] = PermissionHead::orderBy('sortOrder')->get();
-        $data["pageTitle"] = 'Add Role';
-        $data["activeMenu"] = 'role';
+        $data["pageTitle"] = 'Add Gender';
+        $data["activeMenu"] = 'master';
+        $data["activeSubMenu"] = 'gender';
+        return view('admin.gender.create')->with($data);
 
-    //    echo '<pre>';
-    //      print_r($data);
-    //    die();
-        return view('admin.role.create')->with($data);
     }
 
     /**
@@ -60,35 +58,27 @@ class RoleController extends Controller
     {
         //
         $this->validate(request(), [
-            'roleName' => 'required',
+            'name' => 'required',
         ]);
 
-       $permission = $request->input('permissions');
-    //    print_r($permission);
-    //    die();
-        $role = new Role();
-        $role->roleName = $request->input('roleName');
-        $role->status = 1;
-        $role->sortOrder = 1;
-        $role->increment('sortOrder');
-        $role->save();
-
-        $roleId = $role->id;
-        foreach($permission as $value){
-
-            $rolePermission = new RolePermission();
-            $rolePermission->roleId = $roleId;
-            $rolePermission->permissionId = $value;
-            $rolePermission->save(); 
-        }
-        return redirect()->route('role.index')->with('message', 'Role Added Successfully');
-
+        $gender = new Gender();
+        $gender->name = $request->input('name');
+        $gender->description = $request->input('description');
+        // echo "<pre>";
+        // print_r($gender);
+        // die();
+        //$gender->organisationId = $this->organisationId;
+        $gender->status = 1;
+        $gender->sortOrder = 1;
+        $gender->increment('sortOrder');
+        $gender->save();
+        return redirect()->route('gender.index')->with('message', 'Gender Added Successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
         //
     }
@@ -96,17 +86,16 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(string $id)
     {
         //
         $data = array();
-
-        $data['role'] = Role::find($id);
-
+        $data['gender'] = Gender::find($id);
         $data["editStatus"] = 1;
-        $data["pageTitle"] = 'Update Role';
-        $data["activeMenu"] = 'role';
-        return view('admin.role.create')->with($data);
+        $data["pageTitle"] = 'Update Gender';
+        $data["activeMenu"] = 'master';
+        $data["activeSubMenu"] = 'gender';
+        return view('admin.gender.create')->with($data);
     }
 
     /**
@@ -115,18 +104,15 @@ class RoleController extends Controller
     public function update(Request $request)
     {
         //
-        
         $this->validate(request(), [
-            'roleName' => 'required',
+            'name' => 'required',
         ]);
-        
         $id = $request->input('id');
-
-        $role = Role::find($id);
-
-        $role->roleName = $request->input('roleName');
-        $role->save();
-        return redirect()->route('role.index')->with('message', 'Role Updated Successfully');
+        $gender = Gender::find($id);
+        $gender->name = $request->input('name');
+        $gender->description = $request->input('description');
+        $gender->save();
+        return redirect()->route('gender.index')->with('message', 'Gender Updated Successfully');
     }
 
     /**
@@ -136,9 +122,8 @@ class RoleController extends Controller
     {
         //
         $id = $request->id;
-        $role = Role::find($id);
-        $role->delete($id);
-
+        $gender = Gender::find($id);
+        $gender->delete($id);
         return response()->json([
             'status' => 1,
             'message' => 'Delete Successfull',
@@ -150,15 +135,13 @@ class RoleController extends Controller
     {
 
         $record = $request->input('deleterecords');
-
         if (isset($record) && !empty($record)) {
 
             foreach ($record as $id) {
-                $role = Role::find($id);
-                $role->delete();
+                $gender = Gender::find($id);
+                $gender->delete();
             }
         }
-
         return response()->json([
             'status' => 1,
             'message' => 'Delete Successfull',
@@ -171,48 +154,40 @@ class RoleController extends Controller
         $data = $request->records;
         $decoded_data = json_decode($data);
         $result = 0;
-
         if (is_array($decoded_data)) {
             foreach ($decoded_data as $values) {
 
                 $id = $values->id;
-                $role = Role::find($id);
-                $role->sortOrder = $values->position;
-                $result = $role->save();
+                $gender = Gender::find($id);
+                $gender->sortOrder = $values->position;
+                $result = $gender->save();
             }
         }
-
         if ($result) {
             $response = array('status' => 1, 'message' => 'Sort order updated', 'response' => $data);
         } else {
             $response = array('status' => 0, 'message' => 'Something went wrong', 'response' => $data);
         }
-
         return response()->json($response);
     }
 
-    /**
-     * Update Status resource from storage.
-     *
-     */
     public function updateStatus(Request $request)
     {
         $status = $request->status;
         $id = $request->id;
-
-        $role = Role::find($id);
-        $role->status = $status;
-        $result = $role->save();
+        $gender = Gender::find($id);
+        $gender->status = $status;
+        $result = $gender->save();
 
         if ($result) {
             $response = array('status' => 1, 'message' => 'Status updated', 'response' => '');
         } else {
             $response = array('status' => 0, 'message' => 'Something went wrong', 'response' => '');
         }
-
         return response()->json($response);
     }
 
-}
 
+
+}
 
