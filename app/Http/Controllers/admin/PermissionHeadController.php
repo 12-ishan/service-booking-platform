@@ -54,7 +54,6 @@ class PermissionHeadController extends Controller
         ]);
 
         $permissionHead = new PermissionHead();
-
         $permissionHead->name = $request->input('name');
         $permissionHead->status = 1;
         $permissionHead->sortOrder = 1;
@@ -80,7 +79,6 @@ class PermissionHeadController extends Controller
     {
         //
         $data = array();
-
         $data['permissionHead'] = PermissionHead::find($id);
         $data["editStatus"] = 1;
         $data["pageTitle"] = 'Update Permission Head';

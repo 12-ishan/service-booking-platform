@@ -30,9 +30,6 @@ class RoleController extends Controller
         $data["role"] = Role::orderBy('sortOrder')->get();
         $data["pageTitle"] = 'Manage Role';
         $data["activeMenu"] = 'role';
-        // echo '<pre>';
-        //     print_r($data);
-        //    echo '</pre>';
         return view('admin.role.manage')->with($data);
     }
 
@@ -46,10 +43,6 @@ class RoleController extends Controller
         $data["permissionHead"] = PermissionHead::orderBy('sortOrder')->get();
         $data["pageTitle"] = 'Add Role';
         $data["activeMenu"] = 'role';
-
-    //    echo '<pre>';
-    //      print_r($data);
-    //    die();
         return view('admin.role.create')->with($data);
     }
 
@@ -63,9 +56,7 @@ class RoleController extends Controller
             'roleName' => 'required',
         ]);
 
-       $permission = $request->input('permissions');
-    //    print_r($permission);
-    //    die();
+        $permission = $request->input('permissions');
         $role = new Role();
         $role->roleName = $request->input('roleName');
         $role->status = 1;
@@ -100,9 +91,7 @@ class RoleController extends Controller
     {
         //
         $data = array();
-
         $data['role'] = Role::find($id);
-
         $data["editStatus"] = 1;
         $data["pageTitle"] = 'Update Role';
         $data["activeMenu"] = 'role';
