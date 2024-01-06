@@ -90,7 +90,8 @@ class RoleController extends Controller
     public function edit($id)
     {
         //
-        $data = array();
+        $data = array(); 
+        $data['permissionHead'] = PermissionHead::get();
         $data['role'] = Role::find($id);
         $data["editStatus"] = 1;
         $data["pageTitle"] = 'Update Role';
