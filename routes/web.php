@@ -12,6 +12,11 @@ use App\Http\Controllers\admin\QuestionCategoryController;
 use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\MeetingController;
 use App\Http\Controllers\admin\ContactController;
+use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\admin\PermissionHeadController;
+use App\Http\Controllers\admin\GenderController;
+use App\Http\Controllers\admin\BloodGroupController;
+
 
 
 
@@ -79,6 +84,25 @@ Route::group(['middleware' => ['auth']], function () {
  
      //Master/Time-Slot  Routings ends
 
+      //Gender Routings
+    
+      Route::post('admin/gender/updateSortorder',[ GenderController::class, 'updateSortorder']);
+      Route::post('admin/gender/destroyAll',[ GenderController::class, 'destroyAll']);
+      Route::post('admin/gender/updateStatus',[ GenderController::class, 'updateStatus']);
+      Route::resource('admin/gender', GenderController::class);
+  
+      //Gender Routings ends
+
+       //BloodGroup Routings
+    
+       Route::post('admin/bloodGroup/updateSortorder',[ BloodGroupController::class, 'updateSortorder']);
+       Route::post('admin/bloodGroup/destroyAll',[ BloodGroupController::class, 'destroyAll']);
+       Route::post('admin/bloodGroup/updateStatus',[ BloodGroupController::class, 'updateStatus']);
+       Route::resource('admin/bloodGroup', BloodGroupController::class);
+   
+       //BloodGroup Routings ends
+ 
+
      //Question Catgory Routings
     
      Route::post('admin/question-category/updateSortorder',[QuestionCategoryController:: class, 'updateSortorder']);
@@ -121,6 +145,20 @@ Route::group(['middleware' => ['auth']], function () {
          Route::resource('admin/contact',ContactController::class);
      
          //Contact Routings ends
+
+         //Role Routings
+         Route::post('admin/role/updateSortorder',[RoleController::class,  'updateSortorder']);
+         Route::post('admin/role/destroyAll',[RoleController::class,  'destroyAll']);
+         Route::post('admin/role/updateStatus',[RoleController::class,'updateStatus']); 
+         Route::resource('admin/role',RoleController::class);
+         //Role Routings ends
+
+          //PermissionHead Routings
+          Route::post('admin/permissionHead/updateSortorder',[PermissionHeadController::class,  'updateSortorder']);
+          Route::post('admin/permissionHead/destroyAll',[PermissionHeadController::class,  'destroyAll']);
+          Route::post('admin/permissionHead/updateStatus',[PermissionHeadController::class,'updateStatus']); 
+          Route::resource('admin/permissionHead',PermissionHeadController::class);
+          //PermissionHead Routings ends
 
 });
 

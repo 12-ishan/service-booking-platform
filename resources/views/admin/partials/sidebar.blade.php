@@ -230,6 +230,26 @@
                                 </ul>
                             </li>
                         </ul>
+
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='gender' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Gender</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/gender') }}">Manage Gender</a></li>
+                                    <li><a href="{{ url('/admin/gender/create') }}">Add Gender</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='bloodGroup' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Blood Group</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/bloodGroup') }}">Manage Blood Group</a></li>
+                                    <li><a href="{{ url('/admin/bloodGroup/create') }}">Add Blood Group</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
 
 
@@ -344,8 +364,6 @@
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-layout-sidebar-left"></i><span>User
                             </span></a>
-
-
                         <ul class="collapse">
                             <li><a href="{{ url('/admin/user') }}">Manage Users</a></li>
                             <li><a href="{{ url('/admin/user/create') }}">Add User</a></li>
@@ -353,6 +371,31 @@
 
                         </ul>
                     </li>
+
+                    <li @if(isset($activeMenu)) @if($activeMenu=='role' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Role
+                            </span></a>
+
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/role') }}">Manage Role</a></li>
+                            <li><a href="{{ url('/admin/role/create') }}">Add Role</a></li>
+                        </ul>
+                    </li>
+
+                    <li @if(isset($activeMenu)) @if($activeMenu=='permissionHead' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Permission Head
+                            </span></a>
+
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/permissionHead') }}">Manage</a></li>
+                            <li><a href="{{ url('/admin/permissionHead/create') }}">Add</a></li>
+                        </ul>
+                    </li>
+
+
+
                     <li @if(isset($activeMenu)) @if($activeMenu=='website-management' ) class="active" @endif @endif>
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-layout-sidebar-left"></i><span>Website management

@@ -31,8 +31,6 @@ class ProgramController extends Controller
         $data = array();
 
         $data["program"] = Program::where('organisationId', $this->organisationId)->orderBy('sortOrder')->get();
-      
-
         $data["pageTitle"] = 'Manage Program';
         $data["activeMenu"] = 'master';
         $data["activeSubMenu"] = 'program';

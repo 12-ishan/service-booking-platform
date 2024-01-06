@@ -1,21 +1,22 @@
-$(document).ready(function () { 
+$(document).ready(function () {
+  
     $('select').selectpicker();
 
     ///////////////////////////
 
-    $("#deleteAllProgram").on('submit', (function (e) {
+    $("#deleteAllPermissionHead").on('submit', (function (e) {
         e.preventDefault();
 
         var length = $('.checkBoxClass:checked').length > 0;
         if (!length) {
 
             $("#messageModal").modal('show');
-            $("#messageBox").html('<p>No record selected please select Program.</p>');
+            $("#messageBox").html('<p>No record selected please select Permission Head.</p>');
             return false;
         }
 
         $.ajax({
-            url: '/admin/program/destroyAll',
+            url: '/admin/permissionHead/destroyAll',
             type: 'post',
             data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
             contentType: false,       // The content type used when sending data to the server.
@@ -38,7 +39,7 @@ $(document).ready(function () {
                         $('#item' + $(this).val()).hide();
                     });
                     $("#messageModal").modal('show');
-                    $("#messageBox").html('<p>Program information  deleted successfully</p>');
+                    $("#messageBox").html('<p>Permission Head information  deleted successfully</p>');
                 }
 
             }
@@ -47,7 +48,7 @@ $(document).ready(function () {
 
     ///////////////////////////
 
-    var table = $('#programTable').DataTable({
+    var table = $('#permissionHeadTable').DataTable({
         rowReorder: true,
         stateSave: true,
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
@@ -61,7 +62,6 @@ $(document).ready(function () {
 
 
     table.on('row-reorder', function (e, diff, edit) {
-
 
         var arr = [];
 
@@ -77,10 +77,12 @@ $(document).ready(function () {
 
         if (arr.length === 0) { return false; }
 
+      
+
 
         $.ajax({
             type: 'POST',
-            url: '/admin/program/updateSortorder',
+            url: '/admin/permissionHead/updateSortorder',
             data: {
                 'records': JSON.stringify(arr)
             },
@@ -95,6 +97,7 @@ $(document).ready(function () {
                     $("#messageModal").modal('show');
                     $("#messageBox").html('<p>Order updated successfully.</p>');
                     
+
                 } else {
 
                     $("#messageModal").modal('show');
@@ -110,7 +113,6 @@ $(document).ready(function () {
                
             }
         });
-
 
     });
 
@@ -131,7 +133,7 @@ $(document).ready(function () {
                 id: id,
                 status: status,
             },
-            url: '/admin/program/updateStatus',
+            url: '/admin/permissionHead/updateStatus',
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -173,6 +175,7 @@ function deleteAll(Id, title, message) {
 ///////////////////////////
 
 function deleteRecord(id, title, message) {
+    
 
     $("#deleteAlertBox").modal('show');
     $('#deleteMessageHeading').html(title);
@@ -187,7 +190,7 @@ function deleteRecord(id, title, message) {
                 id: id,
                 _method: "DELETE",
             },
-            url: '/admin/program/destroy',
+            url: '/admin/permissionHead/destroy',
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -204,7 +207,7 @@ function deleteRecord(id, title, message) {
 
                     $('#item' + id).hide();
                     $("#messageModal").modal('show');
-                    $("#messageBox").html('<p>Program information  deleted successfully</p>');
+                    $("#messageBox").html('<p>Permission Head information  deleted successfully</p>');
 
                 }
 
