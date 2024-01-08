@@ -59,12 +59,14 @@ class RoleController extends Controller
         $permission = $request->input('permissions');
         $role = new Role();
         $role->roleName = $request->input('roleName');
+        $role->slug = urlencode($request->input('roleName'));
         $role->status = 1;
         $role->sortOrder = 1;
         $role->increment('sortOrder');
         $role->save();
 
         $roleId = $role->id;
+        if (is_array($permission) || is_object($permission)){
         foreach($permission as $value){
 
             $rolePermission = new RolePermission();
@@ -72,6 +74,8 @@ class RoleController extends Controller
             $rolePermission->permissionId = $value;
             $rolePermission->save(); 
         }
+    }
+    
         return redirect()->route('role.index')->with('message', 'Role Added Successfully');
 
     }
@@ -115,6 +119,7 @@ class RoleController extends Controller
         $role = Role::find($id);
 
         $role->roleName = $request->input('roleName');
+        $role->slug = urlencode($request->input('roleName'));
         $role->save();
         return redirect()->route('role.index')->with('message', 'Role Updated Successfully');
     }
