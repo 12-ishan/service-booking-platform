@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\DashboardController;
@@ -36,12 +37,14 @@ use App\Http\Controllers\admin\BloodGroupController;
 */
 
 Route::get('/admin/login',[AdminController::class, 'login'])->name('adminLogin');
+Route::get('/admin/logout',[AdminController::class, 'logout'])->name('adminLogout');
 Route::get('/admin/register',[AdminController::class, 'register'])->name('adminRegister');
 Route::post('register',[AdminController::class, 'createUser'])->name('adminRegisterPost');
 Route::post('login',[AdminController::class, 'doLogin'])->name('doLogin');
 
 Route::group(['middleware' => ['auth']], function () {
-
+    // demo for role based API
+    Route::get('admin/emp-role', [EmployeeController::class, 'index'])->name('emp-role')->middleware('can:add.blog');
     Route::get('admin/user/{id}/edit',[UserController::class, 'edit'])->name('user.edit');
     Route::put('admin/user/{id}',[UserController::class, 'update'])->name('user.update');
     Route::get('/admin/dashboard',[DashboardController::class, 'home'])->name('dashboard');
