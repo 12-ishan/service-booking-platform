@@ -16,7 +16,7 @@
                                     <button type="button" class="btn btn-flat btn-secondary mb-3" onclick="checkAll(1)">Check All</button>
                                     <button type="button" class="btn btn-flat btn-secondary mb-3" onclick="checkAll(0)">Uncheck</button>
 
-                                    <button type="button" class="btn btn-flat btn-danger mb-3" onclick="deleteAll('deleteAllBloodGroup','Delete these Blood group\'s details?','Are you sure you want to delete these blood group\'s details?');">
+                                    <button type="button" class="btn btn-flat btn-danger mb-3" onclick="deleteAll('deleteAllSalutation','Delete these Salutation\'s details?','Are you sure you want to delete these Salutation\'s details?');">
                                         Delete</button>
 
                                     <div class="loading"></div>
@@ -31,14 +31,14 @@
                                     </a>
 
 
-                                    <a href="{{route('bloodGroup.index')}}">
+                                    <a href="{{route('salutation.index')}}">
 
                                         <button type="button" class="btn btn-flat btn-secondary mb-3">Refresh</button>
                                     </a>
 
-                                    <a href="{{route('bloodGroup.create')}}">
+                                    <a href="{{route('salutation.create')}}">
                                    
-                                        <button type="button" class="btn btn-flat btn-secondary mb-3">Add Blood Group</button>
+                                        <button type="button" class="btn btn-flat btn-secondary mb-3">Add Salutation</button>
                                     </a>
 
                                 </div>
@@ -49,10 +49,10 @@
                     </div>
                 </div>
 
-                <form method="post" id="deleteAllBloodGroup">
+                <form method="post" id="deleteAllSalutation">
 
                     <div class="data-tables">
-                        <table id="bloodGroupTable" class="text-center">
+                        <table id="salutationTable" class="text-center">
                             <thead class="bg-light text-capitalize">
                                 <tr>
                                     <th width="5%">Seq.</th>
@@ -63,7 +63,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($bloodGroup as $value)
+                                @foreach($salutation as $value)
 
                                 <tr id="item{{$value->id}}">
                                     <td> {{$loop->iteration}} </td>
@@ -86,8 +86,8 @@
                                             Action
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{route('bloodGroup.edit', $value->id)}}">Edit</a>
-                                            <a class="dropdown-item" onclick="deleteRecord('{{$value->id}}','Delete this blood group details?','Are you sure you want to delete this blood group details?');">Delete</a>
+                                            <a class="dropdown-item" href="{{route('salutation.edit', $value->id)}}">Edit</a>
+                                            <a class="dropdown-item" onclick="deleteRecord('{{$value->id}}','Delete this salutation details?','Are you sure you want to delete this salutation details?');">Delete</a>
                                         </div>
                                     </td>
 
@@ -107,7 +107,7 @@
 </div>
 
 @section('js')
-<script src="{{ asset('assets/admin/js/console/bloodGroup.js') }}"></script>
+<script src="{{ asset('assets/admin/js/console/salutation.js') }}"></script>
 @append
 
 @endsection

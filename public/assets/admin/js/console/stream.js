@@ -3,19 +3,19 @@ $(document).ready(function () {
 
     ///////////////////////////
 
-    $("#deleteAllBloodGroup").on('submit', (function (e) {
+    $("#deleteAllStream").on('submit', (function (e) {
         e.preventDefault();
 
         var length = $('.checkBoxClass:checked').length > 0;
         if (!length) {
 
             $("#messageModal").modal('show');
-            $("#messageBox").html('<p>No record selected please select blood Group.</p>');
+            $("#messageBox").html('<p>No record selected please select stream.</p>');
             return false;
         }
 
         $.ajax({
-            url: '/admin/bloodGroup/destroyAll',
+            url: '/admin/stream/destroyAll',
             type: 'post',
             data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
             contentType: false,       // The content type used when sending data to the server.
@@ -38,7 +38,7 @@ $(document).ready(function () {
                         $('#item' + $(this).val()).hide();
                     });
                     $("#messageModal").modal('show');
-                    $("#messageBox").html('<p>Blood group information  deleted successfully</p>');
+                    $("#messageBox").html('<p>Stream information  deleted successfully</p>');
                 }
 
             }
@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     ///////////////////////////
 
-    var table = $('#bloodGroupTable').DataTable({
+    var table = $('#streamTable').DataTable({
         rowReorder: true,
         stateSave: true,
         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: '/admin/bloodGroup/updateSortorder',
+            url: '/admin/stream/updateSortorder',
             data: {
                 'records': JSON.stringify(arr)
             },
@@ -131,7 +131,7 @@ $(document).ready(function () {
                 id: id,
                 status: status,
             },
-            url: '/admin/bloodGroup/updateStatus',
+            url: '/admin/stream/updateStatus',
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -187,7 +187,7 @@ function deleteRecord(id, title, message) {
                 id: id,
                 _method: "DELETE",
             },
-            url: '/admin/bloodGroup/destroy',
+            url: '/admin/stream/destroy',
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -204,7 +204,7 @@ function deleteRecord(id, title, message) {
 
                     $('#item' + id).hide();
                     $("#messageModal").modal('show');
-                    $("#messageBox").html('<p>Blood Group information  deleted successfully</p>');
+                    $("#messageBox").html('<p>Stream information  deleted successfully</p>');
 
                 }
 
