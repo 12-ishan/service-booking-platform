@@ -25,6 +25,8 @@ use App\Http\Controllers\admin\ModeController;
 use App\Http\Controllers\admin\BoardController;
 use App\Http\Controllers\admin\StreamController;
 use App\Http\Controllers\admin\ProficiencyLevelController;
+use App\Http\Controllers\admin\ProfileController;
+use App\Http\Controllers\RegistrationController;
 
 
 
@@ -48,6 +50,10 @@ Route::get('/admin/login',[AdminController::class, 'login'])->name('adminLogin')
 Route::get('/admin/register',[AdminController::class, 'register'])->name('adminRegister');
 Route::post('register',[AdminController::class, 'createUser'])->name('adminRegisterPost');
 Route::post('login',[AdminController::class, 'doLogin'])->name('doLogin');
+
+// //Registration Routing
+// Route::get('/registration', [RegistrationController::class, 'index']);
+// //Registration Routing ends
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -167,6 +173,13 @@ Route::group(['middleware' => ['auth']], function () {
                Route::resource('admin/stream', StreamController::class);
                //Stream Routings ends
 
+                //Profile Routings
+                Route::post('admin/profile/updateSortorder',[ ProfileController::class, 'updateSortorder']);
+                Route::post('admin/profile/destroyAll',[ ProfileController::class, 'destroyAll']);
+                Route::post('admin/profile/updateStatus',[ ProfileController::class, 'updateStatus']);
+                Route::resource('admin/profile', ProfileController::class);
+                //Profile Routings ends
+
                //ProficiencyLevel Routings
                Route::post('admin/proficiencyLevel/updateSortorder',[ ProficiencyLevelController::class, 'updateSortorder']);
                Route::post('admin/proficiencyLevel/destroyAll',[ ProficiencyLevelController::class, 'destroyAll']);
@@ -234,6 +247,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
+//Registration Routing
+Route::get('/registration', [RegistrationController::class, 'index']);
+//Registration Routing ends
 
 
 // Route::get('/admin/dashboard', 'admin\DashboardController@home');
