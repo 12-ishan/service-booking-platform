@@ -60,6 +60,7 @@ class ProgramController extends Controller
      */
     public function store(Request $request)
     {
+        
         $this->validate(request(), [
             'name' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -72,7 +73,9 @@ class ProgramController extends Controller
         if ($request->hasFile('image')) {  // Check if file input is set
 
             $mediaId = imageUpload($request->image, $program->imageId, $this->userId, "uploads/program/"); //Image, ReferenceRecordId, UserId, Path
-            
+            // echo '<pre>';
+            // print_r($mediaId);
+            // die();
             $program->imageId = $mediaId;
  
          }

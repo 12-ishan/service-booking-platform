@@ -181,6 +181,67 @@
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-layout-sidebar-left"></i><span>Master MGMT
                             </span></a>
+
+                            <ul class="collapse">
+                                <li @if(isset($activeSubMenu)) @if($activeSubMenu=='bloodGroup' ) class="active" @endif @endif>
+                                    <a href="#" aria-expanded="true">Blood Group</a>
+                                    <ul class="collapse">
+                                        <li><a href="{{ url('/admin/bloodGroup') }}">Manage Blood Group</a></li>
+                                        <li><a href="{{ url('/admin/bloodGroup/create') }}">Add Blood Group</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="collapse">
+                                <li @if(isset($activeSubMenu)) @if($activeSubMenu=='board' ) class="active" @endif @endif>
+                                    <a href="#" aria-expanded="true">Board</a>
+                                    <ul class="collapse">
+                                        <li><a href="{{ url('/admin/board') }}">Manage Board</a></li>
+                                        <li><a href="{{ url('/admin/board/create') }}">Add Board</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="collapse">
+                                <li @if(isset($activeSubMenu)) @if($activeSubMenu=='city' ) class="active" @endif @endif>
+                                    <a href="#" aria-expanded="true">City</a>
+                                    <ul class="collapse">
+                                        <li><a href="{{ url('/admin/city') }}">Manage City</a></li>
+                                        <li><a href="{{ url('/admin/city/create') }}">Add City</a></li>
+                                    </ul>
+                                </li>
+                            </ul>    
+
+                            <ul class="collapse">
+                                <li @if(isset($activeSubMenu)) @if($activeSubMenu=='degree' ) class="active" @endif @endif>
+                                    <a href="#" aria-expanded="true">Degree</a>
+                                    <ul class="collapse">
+                                        <li><a href="{{ url('/admin/degree') }}">Manage Degree</a></li>
+                                        <li><a href="{{ url('/admin/degree/create') }}">Add Degree</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="collapse">
+                                <li @if(isset($activeSubMenu)) @if($activeSubMenu=='gender' ) class="active" @endif @endif>
+                                    <a href="#" aria-expanded="true">Gender</a>
+                                    <ul class="collapse">
+                                        <li><a href="{{ url('/admin/gender') }}">Manage Gender</a></li>
+                                        <li><a href="{{ url('/admin/gender/create') }}">Add Gender</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="collapse">
+                                <li @if(isset($activeSubMenu)) @if($activeSubMenu=='mode' ) class="active" @endif @endif>
+                                    <a href="#" aria-expanded="true">Mode</a>
+                                    <ul class="collapse">
+                                        <li><a href="{{ url('/admin/mode') }}">Manage Mode</a></li>
+                                        <li><a href="{{ url('/admin/mode/create') }}">Add Mode</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
                         <ul class="collapse">
                             <li @if(isset($activeSubMenu)) @if($activeSubMenu=='program' ) class="active" @endif @endif>
                                 <a href="#" aria-expanded="true">Program</a>
@@ -191,6 +252,15 @@
                             </li>
                         </ul>
 
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='proficiencyLevel' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Proficiency Level</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/proficiencyLevel') }}">Manage Proficiency Level</a></li>
+                                    <li><a href="{{ url('/admin/proficiencyLevel/create') }}">Add Proficiency Level</a></li>
+                                </ul>
+                            </li>
+                        </ul>
 
                         <ul class="collapse">
                             <li @if(isset($activeSubMenu)) @if($activeSubMenu=='subject' ) class="active" @endif @endif>
@@ -201,6 +271,39 @@
                                 </ul>
                             </li>
                         </ul>
+
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='state' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">State</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/state') }}">Manage State</a></li>
+                                    <li><a href="{{ url('/admin/state/create') }}">Add State</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='salutation' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Salutation</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/salutation') }}">Manage Salutation</a></li>
+                                    <li><a href="{{ url('/admin/salutation/create') }}">Add Salutation</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='stream' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Stream</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/stream') }}">Manage Stream</a></li>
+                                    <li><a href="{{ url('/admin/stream/create') }}">Add Stream</a></li>
+                                </ul>
+                                
+                            </li>
+                        </ul>
+                       
+
                         <ul class="collapse">
                             <li @if(isset($activeSubMenu)) @if($activeSubMenu=='topic' ) class="active" @endif @endif><a
                                     href="#" aria-expanded="true">Topic</a>
@@ -232,26 +335,16 @@
                         </ul>
 
                         <ul class="collapse">
-                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='gender' ) class="active" @endif @endif>
-                                <a href="#" aria-expanded="true">Gender</a>
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='university' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">University</a>
                                 <ul class="collapse">
-                                    <li><a href="{{ url('/admin/gender') }}">Manage Gender</a></li>
-                                    <li><a href="{{ url('/admin/gender/create') }}">Add Gender</a></li>
+                                    <li><a href="{{ url('/admin/university') }}">Manage University</a></li>
+                                    <li><a href="{{ url('/admin/university/create') }}">Add University</a></li>
                                 </ul>
                             </li>
                         </ul>
 
-                        <ul class="collapse">
-                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='bloodGroup' ) class="active" @endif @endif>
-                                <a href="#" aria-expanded="true">Blood Group</a>
-                                <ul class="collapse">
-                                    <li><a href="{{ url('/admin/bloodGroup') }}">Manage Blood Group</a></li>
-                                    <li><a href="{{ url('/admin/bloodGroup/create') }}">Add Blood Group</a></li>
-                                </ul>
-                            </li>
-                        </ul>
                     </li>
-
 
                     <li @if(isset($activeMenu)) @if($activeMenu=='teacher-class' ) class="active" @endif @endif>
                         <a href="javascript:void(0)" aria-expanded="true"><i

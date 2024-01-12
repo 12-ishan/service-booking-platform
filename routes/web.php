@@ -17,6 +17,17 @@ use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\PermissionHeadController;
 use App\Http\Controllers\admin\GenderController;
 use App\Http\Controllers\admin\BloodGroupController;
+use App\Http\Controllers\admin\CityController;
+use App\Http\Controllers\admin\StateController;
+use App\Http\Controllers\admin\SalutationController;
+use App\Http\Controllers\admin\UniversityController;
+use App\Http\Controllers\admin\DegreeController;
+use App\Http\Controllers\admin\ModeController;
+use App\Http\Controllers\admin\BoardController;
+use App\Http\Controllers\admin\StreamController;
+use App\Http\Controllers\admin\ProficiencyLevelController;
+use App\Http\Controllers\admin\ProfileController;
+use App\Http\Controllers\RegistrationController;
 
 
 
@@ -41,6 +52,10 @@ Route::get('/admin/logout',[AdminController::class, 'logout'])->name('adminLogou
 Route::get('/admin/register',[AdminController::class, 'register'])->name('adminRegister');
 Route::post('register',[AdminController::class, 'createUser'])->name('adminRegisterPost');
 Route::post('login',[AdminController::class, 'doLogin'])->name('doLogin');
+
+// //Registration Routing
+// Route::get('/registration', [RegistrationController::class, 'index']);
+// //Registration Routing ends
 
 Route::group(['middleware' => ['auth']], function () {
     // demo for role based API
@@ -104,8 +119,78 @@ Route::group(['middleware' => ['auth']], function () {
        Route::resource('admin/bloodGroup', BloodGroupController::class);
    
        //BloodGroup Routings ends
- 
 
+        //City Routings
+        Route::post('admin/city/updateSortorder',[ CityController::class, 'updateSortorder']);
+        Route::post('admin/city/destroyAll',[ CityController::class, 'destroyAll']);
+        Route::post('admin/city/updateStatus',[ CityController::class, 'updateStatus']);
+        Route::resource('admin/city', CityController::class);
+         //City Routings ends
+
+          //State Routings
+          Route::post('admin/state/updateSortorder',[ StateController::class, 'updateSortorder']);
+          Route::post('admin/state/destroyAll',[ StateController::class, 'destroyAll']);
+          Route::post('admin/state/updateStatus',[ StateController::class, 'updateStatus']);
+          Route::resource('admin/state', StateController::class);
+           //State Routings ends
+
+             //Salutation Routings
+          Route::post('admin/salutation/updateSortorder',[ SalutationController::class, 'updateSortorder']);
+          Route::post('admin/salutation/destroyAll',[ SalutationController::class, 'destroyAll']);
+          Route::post('admin/salutation/updateStatus',[ SalutationController::class, 'updateStatus']);
+          Route::resource('admin/salutation', SalutationController::class);
+           //Salutation Routings ends
+
+          //University Routings
+          Route::post('admin/university/updateSortorder',[ UniversityController::class, 'updateSortorder']);
+          Route::post('admin/university/destroyAll',[ UniversityController::class, 'destroyAll']);
+          Route::post('admin/university/updateStatus',[ UniversityController::class, 'updateStatus']);
+          Route::resource('admin/university', UniversityController::class);
+          //University Routings ends
+
+           //Degree Routings
+           Route::post('admin/degree/updateSortorder',[ DegreeController::class, 'updateSortorder']);
+           Route::post('admin/degree/destroyAll',[ DegreeController::class, 'destroyAll']);
+           Route::post('admin/degree/updateStatus',[ DegreeController::class, 'updateStatus']);
+           Route::resource('admin/degree', DegreeController::class);
+           //Degree Routings 
+           
+            //Mode Routings
+            Route::post('admin/mode/updateSortorder',[ ModeController::class, 'updateSortorder']);
+            Route::post('admin/mode/destroyAll',[ ModeController::class, 'destroyAll']);
+            Route::post('admin/mode/updateStatus',[ ModeController::class, 'updateStatus']);
+            Route::resource('admin/mode', ModeController::class);
+            //Mode Routings ends
+
+              //Board Routings
+              Route::post('admin/board/updateSortorder',[ BoardController::class, 'updateSortorder']);
+              Route::post('admin/board/destroyAll',[ BoardController::class, 'destroyAll']);
+              Route::post('admin/board/updateStatus',[ BoardController::class, 'updateStatus']);
+              Route::resource('admin/board', BoardController::class);
+              //Board Routings ends
+
+               //Stream Routings
+               Route::post('admin/stream/updateSortorder',[ StreamController::class, 'updateSortorder']);
+               Route::post('admin/stream/destroyAll',[ StreamController::class, 'destroyAll']);
+               Route::post('admin/stream/updateStatus',[ StreamController::class, 'updateStatus']);
+               Route::resource('admin/stream', StreamController::class);
+               //Stream Routings ends
+
+                //Profile Routings
+                Route::post('admin/profile/updateSortorder',[ ProfileController::class, 'updateSortorder']);
+                Route::post('admin/profile/destroyAll',[ ProfileController::class, 'destroyAll']);
+                Route::post('admin/profile/updateStatus',[ ProfileController::class, 'updateStatus']);
+                Route::resource('admin/profile', ProfileController::class);
+                //Profile Routings ends
+
+               //ProficiencyLevel Routings
+               Route::post('admin/proficiencyLevel/updateSortorder',[ ProficiencyLevelController::class, 'updateSortorder']);
+               Route::post('admin/proficiencyLevel/destroyAll',[ ProficiencyLevelController::class, 'destroyAll']);
+               Route::post('admin/proficiencyLevel/updateStatus',[ ProficiencyLevelController::class, 'updateStatus']);
+               Route::resource('admin/proficiencyLevel', ProficiencyLevelController::class);
+               //ProficiencyLevel Routings ends
+ 
+ 
      //Question Catgory Routings
     
      Route::post('admin/question-category/updateSortorder',[QuestionCategoryController:: class, 'updateSortorder']);
@@ -165,6 +250,9 @@ Route::group(['middleware' => ['auth']], function () {
 
 });
 
+//Registration Routing
+Route::get('/registration', [RegistrationController::class, 'index']);
+//Registration Routing ends
 
 
 // Route::get('/admin/dashboard', 'admin\DashboardController@home');
