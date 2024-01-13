@@ -28,6 +28,7 @@ use App\Http\Controllers\admin\StreamController;
 use App\Http\Controllers\admin\ProficiencyLevelController;
 use App\Http\Controllers\frontend\RegistrationController;
 use App\Http\Controllers\frontend\StudentController;
+use App\Http\Controllers\frontend\StudentDashboardController;
 
 
 
@@ -49,10 +50,27 @@ use App\Http\Controllers\frontend\StudentController;
 //Registration Routing
 Route::get('/registration', [RegistrationController::class, 'index'])->name('studentRegistration');
 Route::post('/doRegistration', [RegistrationController::class, 'insert'])->name('doRegistration');
+
+Route::get('/student/logout', [StudentController::class, 'logout'])->name('studentLogout');
+
+
+
+Route::group(['middleware' => ['auth:student']], function () {
+
+Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('studentDashboard');
+
+
+
+});
+
+
+
 //Registration Routing ends
 
 //Login Routing
 Route::get('/login', [StudentController::class, 'index'])->name('studentLogin');
+
+Route::post('/doStudentLogin',[StudentController::class, 'doStudentLogin'])->name('doStudentLogin');
 //Login Routing ends
 
 Route::get('/admin/login',[AdminController::class, 'login'])->name('adminLogin');
