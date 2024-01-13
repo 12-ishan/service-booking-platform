@@ -15,6 +15,7 @@ class StudentController extends Controller
     {
         return view('frontend.login');
     }
+    
 
     public function doStudentLogin(Request $request){
      
