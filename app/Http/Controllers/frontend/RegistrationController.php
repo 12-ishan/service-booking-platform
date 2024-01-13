@@ -7,6 +7,7 @@ use App\Models\Frontend\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
 class RegistrationController extends Controller
 {
     //
