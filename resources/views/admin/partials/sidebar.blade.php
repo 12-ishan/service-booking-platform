@@ -302,6 +302,17 @@
                                 
                             </li>
                         </ul>
+                        <ul class="collapse">
+                            <li @if(isset($activeSubMenu)) @if($activeSubMenu=='profile' ) class="active" @endif @endif>
+                                <a href="#" aria-expanded="true">Profile</a>
+                                <ul class="collapse">
+                                    <li><a href="{{ url('/admin/profile') }}">Manage Profile</a></li>
+                                    <li><a href="{{ url('/admin/profile/create') }}">Add Profile</a></li>
+                                </ul>
+                                
+                            </li>
+                        </ul>
+                       
                        
 
                         <ul class="collapse">
@@ -437,7 +448,17 @@
                         </ul>
                     </li>
 
+                    <li @if(isset($activeMenu)) @if($activeMenu=='application' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Application Manager
+                            </span></a>
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/application') }}">Manage Application</a></li>
+                            <li><a href="{{ url('/admin/application/create') }}">Add Application</a></li>
 
+
+                        </ul>
+                    </li>
 
                     <li @if(isset($activeMenu)) @if($activeMenu=='contact' ) class="active" @endif @endif>
                         <a href="javascript:void(0)" aria-expanded="true"><i
@@ -452,6 +473,19 @@
 
                         </ul>
                     </li>
+
+                    <li @if(isset($activeMenu)) @if($activeMenu=='studentManager' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Student Manager
+                            </span></a>
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/studentManager') }}">Manage Student</a></li>
+                            <li><a href="{{ url('/admin/studentManager/create') }}">Add Student</a></li>
+
+
+                        </ul>
+                    </li>
+
 
                     <li @if(isset($activeMenu)) @if($activeMenu=='user' ) class="active" @endif @endif>
                         <a href="javascript:void(0)" aria-expanded="true"><i
