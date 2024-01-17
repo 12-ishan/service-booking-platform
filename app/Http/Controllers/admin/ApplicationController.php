@@ -30,7 +30,7 @@ class ApplicationController extends Controller
         $data["application"] = Application::orderBy('sort_order')->get();
 
         $data["pageTitle"] = 'Manage Application';
-        $data["activeMenu"] = 'master';
+        $data["activeMenu"] = 'application';
         return view('admin.application.manage')->with($data);
     }
 
@@ -55,7 +55,6 @@ class ApplicationController extends Controller
     public function store(Request $request)
     {
         //
-      
         $this->validate(request(), [
             'studentId' => 'required',
             'applicationNumber' => 'required',
@@ -98,7 +97,7 @@ class ApplicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         //
         $data = array();

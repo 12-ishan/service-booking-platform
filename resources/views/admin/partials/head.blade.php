@@ -32,6 +32,7 @@
 <link rel="stylesheet" href="{{ asset('assets/admin/css/styles.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/admin/css/custom.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/admin/css/responsive.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/admin/css/sideMenu.css') }}">
 <!-- modernizr css -->
 <script src="{{ asset('assets/admin/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>

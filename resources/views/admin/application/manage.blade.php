@@ -10,10 +10,10 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="grid-col control-bar">
-
+                          
                             <div class="row control">
                                 <div class="col-6 left-control">
-
+                                   
                                     <button type="button" class="btn btn-flat btn-secondary mb-3" onclick="checkAll(1)">Check All</button>
                                     <button type="button" class="btn btn-flat btn-secondary mb-3" onclick="checkAll(0)">Uncheck</button>
 
@@ -39,9 +39,22 @@
                                     <a href="{{route('application.create')}}">
                                         <button type="button" class="btn btn-flat btn-secondary mb-3">Add Application</button>
                                     </a>
-
+                                  
+                                    <input type="checkbox" id="open">
+                                    <label for="open" class="iconToggle">
+                                        <div class="spinner top"></div>
+                                        <div class="spinner middle"></div>
+                                        <div class="spinner bottom"></div>
+                                    </label>
+                                    <div id="sideMenu">
+                                      <ul class="menu">
+                                        <li><a href="#">Student Id</a></li>
+                                        <li><a href="#">First Name</a></li>
+                                        <li><a href="#">Email</a></li>
+                                      </ul>
+                                    </div>
                                 </div>
-
+                               
                             </div>
 
                         </div>
@@ -92,11 +105,9 @@
                                             <a class="dropdown-item" onclick="deleteRecord('{{$value->id}}','Delete this Application details?','Are you sure you want to delete this Application details?');">Delete</a>
                                         </div>
                                     </td>
-
+                                   
                                 </tr>
-
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
