@@ -2672,6 +2672,43 @@ table.dataTable thead td {
 
 /*-------------------- 26. Offset Sidebar ------------------- */
 
+
+.offset-area2 {
+    position: fixed;
+    right: -320px;
+    top: 0;
+    height: 100vh;
+    width: 320px;
+    background: #f9f9f9;
+    z-index: 998;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.05);
+    -webkit-transition: right 0.3s cubic-bezier(0.62, -0.01, 0.2, 0.83) 0s;
+    transition: right 0.3s cubic-bezier(0.62, -0.01, 0.2, 0.83) 0s;
+}
+
+.show_hide.offset-area2 {
+    right: 0;
+}
+
+.offset-close2 {
+    font-size: 19px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+    -webkit-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+}
+
+.offset-close2:hover {
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+}
+
 .offset-area {
     position: fixed;
     right: -320px;

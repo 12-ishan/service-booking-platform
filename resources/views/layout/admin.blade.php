@@ -33,6 +33,7 @@
     <!-- page container area end --> 
   
   @include('admin/partials.offset')
+  @include('admin/partials.applicationTableOrder')
   @include('admin/partials.modal')
   @include('admin/partials.footer')
   @yield('js')
