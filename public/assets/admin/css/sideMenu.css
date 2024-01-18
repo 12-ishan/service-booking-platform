@@ -1,0 +1,67 @@
+
+#sideMenu{
+  
+    width: 100px;
+    height: 100%;
+    padding-top: 5px;
+    position:fixed;
+    display: inline-block;
+    justify-content: center;
+    background-color: rgb(125, 125, 232);
+    transform: translateX(+520px);
+    transition: transform 200ms ease-in-out;
+  
+
+} 
+#open{
+    display: none;
+   
+}
+#open:checked ~ #sideMenu{
+    transform: translateX(0px);
+   
+}
+
+.menu li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    border-bottom: 1px solid rgb(87, 83, 83);
+}
+.menu li a{
+    color: white
+  
+}
+.iconToggle{
+
+    width: 20px;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 5px;
+    position: relative;
+  
+   
+  
+ }
+ .spinner{
+    height: 3px;
+    background-color: rgb(60, 56, 56);
+    transition: all 0.3s;
+ }
+ .spinner.middle, .spinner.bottom{
+    margin-top: 3px;
+ }
+ #open:checked ~ .iconToggle > .spinner.middle{
+    opacity: 0;
+ }
+ #open:checked ~ .iconToggle > .spinner.top{
+    transform: rotate(135deg);
+    margin-top: 8px;
+ }
+ #open:checked ~ .iconToggle > .spinner.bottom{
+    transform: rotate(-135deg);
+    margin-top: -9px;
+ }
+
+ 

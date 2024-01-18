@@ -29,6 +29,8 @@ use App\Http\Controllers\admin\ProficiencyLevelController;
 use App\Http\Controllers\frontend\RegistrationController;
 use App\Http\Controllers\frontend\StudentController;
 use App\Http\Controllers\frontend\StudentDashboardController;
+use App\Http\Controllers\admin\StudentManagerController;
+use App\Http\Controllers\admin\ApplicationController;
 
 
 
@@ -270,6 +272,21 @@ Route::group(['middleware' => ['auth']], function () {
           Route::post('admin/permissionHead/updateStatus',[PermissionHeadController::class,'updateStatus']); 
           Route::resource('admin/permissionHead',PermissionHeadController::class);
           //PermissionHead Routings ends
+ 
+           //Student Manager Routings
+           Route::post('admin/studentManager/updateSortorder',[StudentManagerController::class,  'updateSortorder']);
+           Route::post('admin/studentManager/destroyAll',[StudentManagerController::class,  'destroyAll']);
+           Route::post('admin/studentManager/updateStatus',[StudentManagerController::class,'updateStatus']); 
+           Route::resource('admin/studentManager',StudentManagerController::class);
+           //Student Manager Routings ends
+
+             //Application Manager Routings
+             Route::post('admin/application/updateSortorder',[ApplicationController::class,  'updateSortorder']);
+             Route::post('admin/application/destroyAll',[ApplicationController::class,  'destroyAll']);
+             Route::post('admin/application/updateStatus',[ApplicationController::class,'updateStatus']); 
+             Route::resource('admin/application',ApplicationController::class);
+             //Application Manager Routings ends
+  
 
 });
 
