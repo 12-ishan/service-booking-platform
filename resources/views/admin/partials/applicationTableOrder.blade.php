@@ -1,3 +1,4 @@
+
 @if(isset($includeOffset) && $includeOffset)
 
 
@@ -8,26 +9,22 @@
         <div class="offset-settings">
                     <h4>Manage Order</h4>
                     <div class="settings-list">
-                        <div class="s-settings">
+
+                     @foreach ($finalColumnSettings as $columnSetting)
+                                    
+
+                                         <div class="s-settings">
                             <div class="s-sw-title">
-                                <h5>Column</h5>
+                                <h5>{{ $columnSetting['title'] }}</h5>
                             </div>
                         </div>
-                         <div class="s-settings">
-                            <div class="s-sw-title">
-                                <h5>Column</h5>
-                            </div>
-                        </div>
-                         <div class="s-settings">
-                            <div class="s-sw-title">
-                                <h5>Column</h5>
-                            </div>
-                        </div>
-                         <div class="s-settings">
-                            <div class="s-sw-title">
-                                <h5>Column</h5>
-                            </div>
-                        </div>
+
+
+                                          
+                                        @endforeach
+
+
+                       
                     </div>
                 </div>
        
