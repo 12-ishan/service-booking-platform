@@ -37,3 +37,5 @@
 <script src="{{ asset('assets/admin/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
