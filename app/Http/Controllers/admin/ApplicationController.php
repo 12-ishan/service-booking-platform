@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Frontend\Student;
 use App\Models\Admin\Application;
+use App\Models\Admin\GlobalSetting;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,11 +29,21 @@ class ApplicationController extends Controller
         //
         $data = array();
 
-        $data["application"] = Application::orderBy('sort_order')->get();
+        $settings = GlobalSetting::first(); // Assuming you have only one row in the settings table
 
-        $data["pageTitle"] = 'Manage Application';
-        $data["activeMenu"] = 'application';
-        return view('admin.application.manage')->with($data);
+        $columnSettings = json_decode($settings->application_table_order, true);
+
+        //dd($columnSettings);
+
+        $application = Application::orderBy('sort_order')->get();
+
+        $pageTitle = 'Manage Application';
+        $activeMenu = 'application';
+      
+
+        return view('admin.application.manage', compact('pageTitle', 'activeMenu', 'application', 'columnSettings'));
+
+      //  , compact('students', 'columnSettings'));
     }
 
     /**

@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class GlobalSetting extends Model
 {
-    use HasFactory;
+    // use HasFactory;
+    protected $table = 'global_settings';
 }
