@@ -67,8 +67,10 @@
 
 
 
-                                        @foreach ($columnSettings as $columnSetting)
+                                        @foreach ($finalColumnSettings as $columnSetting)
+                                        @if($columnSetting['visibleStatus'])
                                             <th>{{ $columnSetting['title'] }}</th>
+                                        @endif    
                                         @endforeach
 
 
@@ -87,10 +89,10 @@
                                                     value="{{ $value->id }}">
                                             </td>
 
+                                            @foreach ($finalColumnSettings as $columnSetting)
 
-                                            @foreach ($columnSettings as $columnSetting)
+                                             @if($columnSetting['visibleStatus'])
                                                 <td>
-
 
 
                                                     @if ($columnSetting['column'] === 'full_name')
@@ -120,6 +122,7 @@
 
                                                         {{ $finalValue }}
                                                 </td>
+                                                @endif
                                             @endforeach
 
                                             <td>

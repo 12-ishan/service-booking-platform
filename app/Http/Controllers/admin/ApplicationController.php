@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Frontend\Student;
 use App\Models\Admin\Application;
 use App\Models\Admin\GlobalSetting;
+use App\Models\Admin\Setting;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ class ApplicationController extends Controller
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             $this->userId = Auth::user()->id;
+            $this->organisationId = Auth::user()->organisationId;
         
             return $next($request);
         });
@@ -26,24 +28,38 @@ class ApplicationController extends Controller
      */
     public function index()
     {
-        //
         $data = array();
 
-        $settings = GlobalSetting::first(); // Assuming you have only one row in the settings table
+       
+        $finalColumnSettings = '';
 
-        $columnSettings = json_decode($settings->application_table_order, true);
+        $organisationSetting = Setting::where('organisationId', $this->organisationId)->first();
 
-        //dd($columnSettings);
+        if(isset($organisationSetting)) {
+
+        $orgColumnSettings = json_decode($organisationSetting->application_table_order, true);
+        
+        $finalColumnSettings = $orgColumnSettings;
+
+       }
+
+
+        if(empty($finalColumnSettings)){
+
+            $settings = GlobalSetting::first(); // Assuming you have only one row in the settings table
+
+            $columnSettings = json_decode($settings->application_table_order, true);
+
+            $finalColumnSettings = $columnSettings;
+
+        }
 
         $application = Application::orderBy('sort_order')->get();
 
         $pageTitle = 'Manage Application';
         $activeMenu = 'application';
       
-
-        return view('admin.application.manage', compact('pageTitle', 'activeMenu', 'application', 'columnSettings'));
-
-      //  , compact('students', 'columnSettings'));
+        return view('admin.application.manage', compact('pageTitle', 'activeMenu', 'application', 'finalColumnSettings'));
     }
 
     /**
