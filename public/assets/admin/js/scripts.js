@@ -140,6 +140,12 @@
         $('.settings-btn').toggleClass('active');
     });
 
+
+    $('.settings-btn2, .offset-close2').on('click', function() {
+        $('.offset-area2').toggleClass('show_hide');
+        $('.settings-btn2').toggleClass('active');
+    });
+
     /*================================
     Owl Carousel
     ==================================*/

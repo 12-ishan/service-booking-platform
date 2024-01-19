@@ -40,19 +40,9 @@
                                         <button type="button" class="btn btn-flat btn-secondary mb-3">Add Application</button>
                                     </a>
                                   
-                                    <input type="checkbox" id="open">
-                                    <label for="open" class="iconToggle">
-                                        <div class="spinner top"></div>
-                                        <div class="spinner middle"></div>
-                                        <div class="spinner bottom"></div>
-                                    </label>
-                                    <div id="sideMenu">
-                                      <ul class="menu">
-                                        <li><a href="#">Student Id</a></li>
-                                        <li><a href="#">First Name</a></li>
-                                        <li><a href="#">Email</a></li>
-                                      </ul>
-                                    </div>
+                                    <div class="settings-btn2">
+                                <i class="ti-settings"></i>
+                            </div>
                                 </div>
                                
                             </div>

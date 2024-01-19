@@ -157,9 +157,11 @@
                                     </div>
                                 </div>
                             </li> -->
-                            <!-- <li class="settings-btn">
+                             <li class="settings-btn">
                                 <i class="ti-settings"></i>
-                            </li> -->
+                            </li>
+
+                             
                         </ul>
                     </div>
                 </div>
