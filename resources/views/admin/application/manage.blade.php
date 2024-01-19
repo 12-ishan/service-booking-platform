@@ -90,22 +90,35 @@
 
                                             @foreach ($columnSettings as $columnSetting)
                                                 <td>
-                                                    @if (strpos($columnSetting['column'], '.') !== false)
-                                                        {{-- Handle related fields --}}
-                                                        @php
-                                                            $relatedFields = explode('.', $columnSetting['column']);
-                                                            
-                                                            $finalValue = $value->{$relatedFields[0]}->{$relatedFields[1]};
-                                                        @endphp
-                                                    @else
-                                                        {{-- Non-related fields --}}
-                                                        @php
-                                                            $finalValue = $value->{$columnSetting['column']};
-           
-                                                        @endphp
-                                                    @endif
 
-                                                    {{ $finalValue }}
+
+
+                                                    @if ($columnSetting['column'] === 'full_name')
+                                                       
+                                                        {{-- Handle concatenation for Fullname --}}
+
+
+                                                           @php
+                                                                $finalValue = $value->student->first_name . " " . $value->student->last_name;
+
+                                                            @endphp
+
+                                                    @elseif (strpos($columnSetting['column'], '.') !== false)
+                                                            {{-- Handle related fields --}}
+                                                            @php
+                                                                $relatedFields = explode('.', $columnSetting['column']);
+
+                                                                $finalValue = $value->{$relatedFields[0]}->{$relatedFields[1]};
+                                                            @endphp
+                                                        @else
+                                                            {{-- Non-related fields --}}
+                                                            @php
+                                                                $finalValue = $value->{$columnSetting['column']};
+
+                                                            @endphp
+                                                        @endif
+
+                                                        {{ $finalValue }}
                                                 </td>
                                             @endforeach
 
