@@ -40,11 +40,11 @@
                                 <div class="col-6 mt-5">
                                     <div class="form-group">
                                         <label for="studentId">Student</label>
-                                        <select class="form-control selectpicker" id="studentId" name="studentId" data-live-search="true">
+                                        <select class="form-control selectpicker" id="studentName" name="studentName" data-live-search="true">
                                             <option value="">Select student</option>
                                             @if(isset($student))
                                             @foreach($student as $value)
-                                            <option value="{{$value->id}}" @if (old('studentId', isset($application->student_id) ? $application->student_id : NULL) == $value->id) selected="selected" @endif>{{$value->id}}</option>
+                                            <option value="{{$value->id}}" @if (old('studentId', isset($application->student_id ) ? $application->student_id : NULL) == $value->id) selected="selected" @endif>{{$value->first_name . " " . $value->last_name}}</option>
                                             @endforeach
                                             @endif
                                         </select>
