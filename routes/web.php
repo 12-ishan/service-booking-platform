@@ -284,6 +284,7 @@ Route::group(['middleware' => ['auth']], function () {
              Route::post('admin/application/updateSortorder',[ApplicationController::class,  'updateSortorder']);
              Route::post('admin/application/destroyAll',[ApplicationController::class,  'destroyAll']);
              Route::post('admin/application/updateStatus',[ApplicationController::class,'updateStatus']); 
+             Route::post('admin/application/updateOrder',[ApplicationController::class,'updateOrder']); 
              Route::resource('admin/application',ApplicationController::class);
              //Application Manager Routings ends
   

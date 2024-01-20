@@ -58,6 +58,8 @@ class ApplicationController extends Controller
 
         $pageTitle = 'Manage Application';
         $activeMenu = 'application';
+
+    
       
         return view('admin.application.manage', compact('pageTitle', 'activeMenu', 'application', 'finalColumnSettings'));
     }
@@ -242,6 +244,35 @@ class ApplicationController extends Controller
         $application = Application::find($id);
         $application->status = $status;
         $result = $application->save();
+
+        if ($result) {
+            $response = array('status' => 1, 'message' => 'Status updated', 'response' => '');
+        } else {
+            $response = array('status' => 0, 'message' => 'Something went wrong', 'response' => '');
+        }
+
+        return response()->json($response);
+    }
+
+
+    public function updateOrder(Request $request)
+    {
+        $columnSettings = $request->columnSettings;
+        $organisationId = $this->organisationId;
+
+        $organisationSettingCheck = Setting::where('organisationId', $this->organisationId)->first();
+
+        if (empty($organisationSettingCheck)) {
+
+            $organisationSetting = new Setting();
+
+        } else {
+            $organisationSetting = Setting::find($organisationSettingCheck->id);
+        }
+
+        $organisationSetting->application_table_order = json_encode($columnSettings);
+
+        $result = $organisationSetting->save();
 
         if ($result) {
             $response = array('status' => 1, 'message' => 'Status updated', 'response' => '');
