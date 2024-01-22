@@ -46,9 +46,15 @@
                                                 Application</button>
                                         </a>
 
+                                        <div class="filter-button">
+                                            <i class="ti-settings"></i>
+                                        </div>
+
                                         <div class="settings-btn2">
                                             <i class="ti-settings"></i>
                                         </div>
+
+
                                     </div>
 
                                 </div>
