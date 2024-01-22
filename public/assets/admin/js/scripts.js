@@ -146,6 +146,12 @@
         $('.settings-btn2').toggleClass('active');
     });
 
+
+    $('.filter-button, .filter-button-close').on('click', function() {
+        $('.filter-button-area').toggleClass('show_hide');
+        $('.filter-button').toggleClass('active');
+    });
+
     /*================================
     Owl Carousel
     ==================================*/

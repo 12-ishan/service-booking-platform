@@ -34,6 +34,7 @@
   
   @include('admin/partials.offset')
   @include('admin/partials.applicationTableOrder')
+  @include('admin/partials.applicationFilter')
   @include('admin/partials.modal')
   @include('admin/partials.footer')
   @yield('js')

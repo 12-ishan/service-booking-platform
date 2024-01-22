@@ -3,7 +3,7 @@
     <div class="sidebar-header">
         <div class="logo">
             <!-- <a href="index.html"><img src="{{ asset('assets/admin/images/icon/logo.png') }}" alt="logo"></a> -->
-            <p style="color:#fff; text-decoration: underline;">Steve Dashboard</p>
+            <p style="color:#fff; text-decoration: underline;">Application Dashboard</p>
         </div>
     </div>
     <div class="main-menu">
