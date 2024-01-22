@@ -44,7 +44,7 @@
                                             <option value="">Select student</option>
                                             @if(isset($student))
                                             @foreach($student as $value)
-                                            <option value="{{$value->id}}" @if (old('studentId', isset($application->student_id) ? $application->student_id : NULL) == $value->id) selected="selected" @endif>{{$value->id}}</option>
+                                            <option value="{{$value->id}}" @if (old('studentId', isset($application->student_id ) ? $application->student_id : NULL) == $value->id) selected="selected" @endif>{{$value->first_name . " " . $value->last_name}}</option>
                                             @endforeach
                                             @endif
                                         </select>

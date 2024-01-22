@@ -32,7 +32,9 @@
 <link rel="stylesheet" href="{{ asset('assets/admin/css/styles.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/admin/css/custom.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/admin/css/responsive.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/admin/css/sideMenu.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/admin/css/customs.css') }}">
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
 <!-- modernizr css -->
 <script src="{{ asset('assets/admin/js/vendor/modernizr-2.8.3.min.js') }}"></script>
 <script src="//cdn.ckeditor.com/4.14.0/full/ckeditor.js"></script>

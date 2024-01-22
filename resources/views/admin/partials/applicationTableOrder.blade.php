@@ -7,20 +7,20 @@
 <div class="offset-area2">
         <div class="offset-close2"><i class="ti-close"></i></div>
 
-        <div class="offset-settings">
+        <div class="offset-settings manageOrder">
                     <h4>Manage Order</h4>
                     <div class="settings-list">
 
-
+                       
                     <ul id="sortable">
-                    @foreach($finalColumnSettings as $index => $columnSetting)
-                        <li data-index="{{ $index }}" data-column="{{ $columnSetting['column'] }}" data-title="{{ $columnSetting['title'] }}">
-
-                            <input type="checkbox" class="column-checkbox" {{ $columnSetting['visibleStatus'] ? 'checked' : '' }}>{{ preg_replace('/[\s\x{200B}-\x{200D}]+/u', '', $columnSetting['title']) }}</li>
+                    @foreach($finalColumnSettings as $index => $columnSetting) <div class="order ">
+                        <li data-index="{{ $index }}" data-column="{{ $columnSetting['column'] }}" data-title="{{ $columnSetting['title'] }}"  >
+                            
+                            <input type="checkbox" class="column-checkbox check" {{ $columnSetting['visibleStatus'] ? 'checked' : '' }} id="updateOrderCheckbox"><label for="updateOrderCheckbox" class="check"></label>{{ preg_replace('/[\s\x{200B}-\x{200D}]+/u', '', $columnSetting['title']) }}</li><div id="pointer"><i class="uil uil-draggabledots dragger" ></i></div></div>
                     @endforeach
                     </ul>
 
-                     <button type="button" class="btn btn-primary" id="saveColumns">Save</button>
+                     <button type="button" class="btn btn-primary btn2" id="saveColumns">Save</button>
 
                        
                     </div>
@@ -33,6 +33,7 @@
     $(function() {
         // Initialize sortable list
         $("#sortable").sortable();
+       
 
         // Handle checkbox change
         $(".column-checkbox").change(function() {
