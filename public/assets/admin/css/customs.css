@@ -1,0 +1,30 @@
+.manageOrder{
+    padding-top: 50px;
+    padding-left: 20px;
+}
+
+
+.order{
+    margin-top: 10px;
+    border: 1px solid black;
+    padding: 10px;
+    background-color: rgb(231, 233, 226);
+    box-shadow: 0 15px 30px rgba(120, 113, 113, 0.1);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+ 
+   
+}
+.btn2{
+    margin-top: 10px;
+}
+.check{
+    padding-right: 10px;
+  
+}
+.dragger{
+    cursor: all-scroll;
+}
