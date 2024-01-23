@@ -31,6 +31,7 @@ use App\Http\Controllers\frontend\StudentController;
 use App\Http\Controllers\frontend\StudentDashboardController;
 use App\Http\Controllers\admin\StudentManagerController;
 use App\Http\Controllers\admin\ApplicationController;
+use App\Http\Controllers\admin\CouponController;
 
 
 
@@ -214,6 +215,14 @@ Route::group(['middleware' => ['auth']], function () {
                Route::post('admin/proficiencyLevel/updateStatus',[ ProficiencyLevelController::class, 'updateStatus']);
                Route::resource('admin/proficiencyLevel', ProficiencyLevelController::class);
                //ProficiencyLevel Routings ends
+
+                 //Coupon Routings
+                 Route::post('admin/coupon/updateSortorder',[ CouponController::class, 'updateSortorder']);
+                 Route::post('admin/coupon/destroyAll',[ CouponController::class, 'destroyAll']);
+                 Route::post('admin/coupon/updateStatus',[ CouponController::class, 'updateStatus']);
+                 Route::resource('admin/coupon', CouponController::class);
+                 //Coupon Routings ends
+   
  
  
      //Question Catgory Routings
