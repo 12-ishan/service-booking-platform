@@ -22,4 +22,8 @@ class Program extends Model
     {
         return $this->belongsTo('App\Models\Admin\Organisation', 'organisationId', 'id');
     }
+    public function application()
+    {
+        return $this->hasMany('App\Models\Admin\application');
+    }
 }

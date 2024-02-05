@@ -251,6 +251,16 @@
                                 </li>
                             </ul>
 
+                            <ul class="collapse">
+                                <li @if(isset($activeSubMenu)) @if($activeSubMenu=='paymentHistory' ) class="active" @endif @endif>
+                                    <a href="#" aria-expanded="true">Payment History</a>
+                                    <ul class="collapse">
+                                        <li><a href="{{ url('/admin/paymentHistory') }}">Manage Payment History</a></li>
+                                       
+                                    </ul>
+                                </li>
+                            </ul>    
+
                         <ul class="collapse">
                             <li @if(isset($activeSubMenu)) @if($activeSubMenu=='program' ) class="active" @endif @endif>
                                 <a href="#" aria-expanded="true">Program</a>

@@ -53,6 +53,20 @@
 
                                 <div class="col-6 mt-5">
                                     <div class="form-group">
+                                        <label for="programId">Program</label>
+                                        <select class="form-control selectpicker" id="programId" name="programId" data-live-search="true">
+                                            <option value="">Select Program</option>
+                                            @if(isset($program))
+                                            @foreach($program as $value)
+                                            <option value="{{$value->id}}" @if (old('programId', isset($application->program_id) ? $application->program_id : NULL) == $value->id) selected="selected" @endif>{{$value->name}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 mt-5">
+                                    <div class="form-group">
                                         <label for="applicationNumber">Application Number</label>
                                         <input type="text" class="form-control" id="applicationNumber" name="applicationNumber" placeholder="Enter application number" value="{{old('applicationNumber',  isset($application->application_number) ? $application->application_number : NULL)}}">
                                     </div>
@@ -116,6 +130,12 @@ $(document).ready(function(){
         {
             $("#err").text("Please select student Id");
             $("#studentId").focus();
+            return false;
+        }
+        if($("#programId").val()=="")
+        {
+            $("#err").text("Please select program Id");
+            $("#programId").focus();
             return false;
         }
         if($("#startDate").val()=="")

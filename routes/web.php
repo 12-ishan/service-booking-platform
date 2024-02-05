@@ -32,6 +32,7 @@ use App\Http\Controllers\frontend\StudentDashboardController;
 use App\Http\Controllers\admin\StudentManagerController;
 use App\Http\Controllers\admin\ApplicationController;
 use App\Http\Controllers\admin\CouponController;
+use App\Http\Controllers\admin\PaymentHistoryController;
 
 
 
@@ -222,6 +223,15 @@ Route::group(['middleware' => ['auth']], function () {
                  Route::post('admin/coupon/updateStatus',[ CouponController::class, 'updateStatus']);
                  Route::resource('admin/coupon', CouponController::class);
                  //Coupon Routings ends
+
+                   //Payment History Routings
+                   Route::post('admin/paymentHistory/destroyAll',[ PaymentHistroyController::class, 'destroyAll']);
+                   Route::post('admin/paymentHistory/updateSortorder',[ PaymentHistroyController::class, 'updateSortorder']);
+                   Route::post('admin/paymentHistory/updateStatus',[ PaymentHistroyController::class, 'updateStatus']);
+                   Route::get('admin/paymentHistory', [PaymentHistoryController::class, 'index'])->name('index');
+                   Route::post('admin/paymentHistory', [PaymentHistoryController::class, 'store'])->name('store');
+                   //Payment History Routings ends
+     
    
  
  

@@ -14,9 +14,9 @@
                        
                     <ul id="sortable">
                     @foreach($finalColumnSettings as $index => $columnSetting) <div class="order ">
-                        <li data-index="{{ $index }}" data-column="{{ $columnSetting['column'] }}" data-title="{{ $columnSetting['title'] }}"  >
+                        <li data-index="{{ $index }}" data-column="{{ $columnSetting['column'] }}" data-title="{{ $columnSetting['title'] }}" class="item1" >
                             
-                            <input type="checkbox" class="column-checkbox check" {{ $columnSetting['visibleStatus'] ? 'checked' : '' }} id="updateOrderCheckbox"><label for="updateOrderCheckbox" class="check"></label>{{ preg_replace('/[\s\x{200B}-\x{200D}]+/u', '', $columnSetting['title']) }}</li><div id="pointer"><i class="uil uil-draggabledots dragger" ></i></div></div>
+                            <input type="checkbox" class="column-checkbox " {{ $columnSetting['visibleStatus'] ? 'checked' : '' }} id="updateOrderCheckbox"><label for="updateOrderCheckbox" class="check"></label>{{ preg_replace('/[\s\x{200B}-\x{200D}]+/u', '', $columnSetting['title']) }}</li><i class="uil uil-draggabledots dragger" ></i></div>
                     @endforeach
                     </ul>
 
