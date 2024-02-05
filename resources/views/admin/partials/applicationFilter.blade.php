@@ -7,7 +7,7 @@
 <div class="filter-button-area">
         <div class="filter-button-close"><i class="ti-close"></i></div>
 
-        <div class="offset-settings manageOrder">
+        <div class="offset-settings filterData">
                     <h4>Filter Data</h4>
                     <div class="settings-list">
 
@@ -15,16 +15,16 @@
                         <div id="filter-popup">
                         <button id="add-filter">Add Filter</button>
                         <form id="filter-form">
-                     
-                     
+                    
+
                      
                         <!-- Filter rows will be added here dynamically -->
 
+                 
 
-
-
-                        <button type="submit">Apply Filters</button>
-                        <button type="button" id="reset-filters">Reset Filters</button>
+                        <div class="applyResetBtn">
+                        <button type="submit" class="applyBtn">Apply Filters</button>
+                        <button type="button" class="resetBtn" id="reset-filters">Reset Filters</button></div>
                         </form>
                         </div>
 
@@ -32,7 +32,7 @@
 
                        
                     </div>
-                </div>
+        </div>
        
        
     </div>
@@ -42,34 +42,37 @@
     $(document).ready(function () {
 
         let config = <?= json_encode($finalColumnSettings); ?>;
+       
 
         function addFilterRow(column, operation, value) {
             
 
             let options = '';
                 config.forEach(function (item) {
-                    options += '<option value="' + item.column + '">' + item.title + '</option>';
+                options += '<option value="' + item.column + '">' + item.title + '</option>';
+                
+               
             });
 
-            let row = '<div class="form-row mb-2">' +
-                '<div class="col-4">' +
-                '<select class="form-control filter-column" name="filter_columns[]" required>' +
+            let row = '<div class="form-row mb-2 filterDiv">' +
+                '<div class="col-4 inputData">' +
+                '<select class="form-control filter-column " name="filter_columns[]" required>' +
                 '<option value="" disabled selected>Select Column</option>' +
                 options +
                 '</select>' +
                 '</div>' +
-                '<div class="col-3">' +
-                '<select class="form-control filter-operation" name="filter_operations[]" required>' +
+                '<div class="col-3 inputData">' +
+                '<select class="form-control filter-operation " name="filter_operations[]" required>' +
                 '<option value="equal" ' + (operation === 'equal' ? 'selected' : '') + '>Equal</option>' +
                 '<option value="between" ' + (operation === 'between' ? 'selected' : '') + '>Between</option>' +
                 '<option value="like" ' + (operation === 'like' ? 'selected' : '') + '>Like</option>' +
                 '</select>' +
                 '</div>' +
-                '<div class="col-3">' +
-                '<input type="text" class="form-control filter-value" name="filter_values[]" value="' + value + '" required>' +
+                '<div class="col-3 inputData ">' +
+                '<input type="text" class="form-control filter-value " name="filter_values[]" value="' + value + '" required>' +
                 '</div>' +
-                '<div class="col-2">' +
-                '<button type="button" class="btn btn-danger remove-filter">Remove</button>' +
+                '<div class="col-2 inputData">' +
+                '<button type="button" class="btn btn-danger remove-filter"><i class="fa fa-close"></i></button>' +
                 '</div>' +
                 '</div>';
 

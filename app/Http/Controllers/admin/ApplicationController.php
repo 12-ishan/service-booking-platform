@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Frontend\Student;
+use App\Models\Admin\Program;
 use App\Models\Admin\Application;
 use App\Models\Admin\GlobalSetting;
 use App\Models\Admin\Setting;
@@ -32,25 +33,29 @@ class ApplicationController extends Controller
 
        
         $finalColumnSettings = '';
-
+      
         $organisationSetting = Setting::where('organisationId', $this->organisationId)->first();
-
+       
         if(isset($organisationSetting)) {
-
+          
         $orgColumnSettings = json_decode($organisationSetting->application_table_order, true);
-        
+       
+      
         $finalColumnSettings = $orgColumnSettings;
 
+       
+       
        }
 
 
         if(empty($finalColumnSettings)){
-
+           
             $settings = GlobalSetting::first(); // Assuming you have only one row in the settings table
-
+          
             $columnSettings = json_decode($settings->application_table_order, true);
-
+          
             $finalColumnSettings = $columnSettings;
+         
 
         }
 
@@ -60,7 +65,6 @@ class ApplicationController extends Controller
         $activeMenu = 'application';
 
     
-      
         return view('admin.application.manage', compact('pageTitle', 'activeMenu', 'application', 'finalColumnSettings'));
     }
 
@@ -73,6 +77,7 @@ class ApplicationController extends Controller
         $data = array();
 
         $data["student"] = Student::where('status',1)->orderBy('sort_order')->get();
+        $data["program"] = Program::where('status',1)->orderBy('sortOrder')->get();
   
         $data["pageTitle"] = 'Add Application';
         $data["activeMenu"] = 'application';
@@ -87,6 +92,7 @@ class ApplicationController extends Controller
         //
         $this->validate(request(), [
             'studentId' => 'required',
+            'programId' => 'required',
             'applicationNumber' => 'required',
             'startTime' => 'required',
             'endTime' => 'required',
@@ -98,6 +104,7 @@ class ApplicationController extends Controller
         $application = new Application();
 
         $application->student_id = $request->input('studentId');
+        $application->program_id = $request->input('programId');
         $application->application_number = $request->input('applicationNumber');
         $application->start_time = $request->input('startTime');
         $application->end_time = $request->input('endTime');
@@ -149,6 +156,7 @@ class ApplicationController extends Controller
         //
         $this->validate(request(), [
             'studentId' => 'required',
+            'programId' => 'required',
             'applicationNumber' => 'required',
             'startTime' => 'required',
             'endTime' => 'required',
@@ -160,6 +168,7 @@ class ApplicationController extends Controller
         $application = Application::find($id);
        
         $application->student_id = $request->input('studentId');
+        $application->program_id = $request->input('programId');
         $application->application_number = $request->input('applicationNumber');
         $application->start_time = $request->input('startTime');
         $application->end_time = $request->input('endTime');
@@ -257,6 +266,7 @@ class ApplicationController extends Controller
 
     public function updateOrder(Request $request)
     {
+       
         $columnSettings = $request->columnSettings;
         $organisationId = $this->organisationId;
 

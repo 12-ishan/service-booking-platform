@@ -25,10 +25,6 @@ class GlobalSettingSeeder extends Seeder
                 ['column' => 'end_time', 'title' => 'End Time', 'visibleStatus' => 1],
                 ['column' => 'last_date', 'title' => 'Last Date', 'visibleStatus' => 1],
                
-
-
-
-              
                 // Add more columns as needed
             ]),
             'created_at' => now(),

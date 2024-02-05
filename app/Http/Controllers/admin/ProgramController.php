@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Program;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -79,7 +80,7 @@ class ProgramController extends Controller
          }
 
             $program->name = $request->input('name');
-            $program->slug = urlencode($request->input('name'));
+            $program->slug = str::slug($request->input('name'));
             $program->metaKeyword = $request->input('metaKeyword');
             $program->metaDescription = $request->input('metaDescription');
             $program->description = $request->input('description');
