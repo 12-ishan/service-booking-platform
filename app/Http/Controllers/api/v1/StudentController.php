@@ -19,7 +19,8 @@ class StudentController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:student,email',
-            'password' => 'required|min:8'
+            'password' => 'required|min:8',
+            //'receive_updates' => 'required|boolean'
         ]);
     
         // Check if validation fails
@@ -40,6 +41,9 @@ class StudentController extends Controller
             $student->last_name = $request->input('last_name');
             $student->email = $request->input('email');
             $student->password = Hash::make($password);
+            $student->receive_updates = $request->input('receive_updates');
+            $student->is_otp_verified = 0;
+            $student->otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
             $student->status = 1;
             $student->sort_order = 1;
             $student->increment('sort_order');
@@ -62,8 +66,33 @@ class StudentController extends Controller
     
         return response()->json($response, 201);
     }
-    
+
+    public function verifyOtp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'otp' => 'required|digits:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+        
+        $student = Student::where('id', $request->id)->where('otp', $request->otp)->first();
+     
+        if (empty($student)) {
+            return response()->json(['message' => 'invalid OTP', 'status' => '0'], 422);
+        }
+        else{
+
+           $student->is_otp_verified = 1;
+           $student->save();
+           return response()->json(['message' => 'OTP verified', 'status' => '1']);
+        } 
+    }
+
 }
+    
+
 
 
    

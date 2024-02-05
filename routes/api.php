@@ -23,6 +23,7 @@ use App\Http\Controllers\api\v1\ProgramVerifyController;
 
 //Public Api Routes
 Route::post('/v1/student-register', [StudentController::class, 'studentRegister']);
+Route::post('/v1/verify-otp', [StudentController::class, 'verifyOtp']);
 //Public Api route ends
 
 //program-verify Api Route
