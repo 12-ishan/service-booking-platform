@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Frontend\Student;
+use App\Models\Frontend\LoginOtpVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Validator;
@@ -20,7 +21,6 @@ class StudentController extends Controller
             'last_name' => 'required',
             'email' => 'required|email|unique:student,email',
             'password' => 'required|min:8',
-            //'receive_updates' => 'required|boolean'
         ]);
     
         // Check if validation fails
@@ -32,7 +32,8 @@ class StudentController extends Controller
         // Proceed with registration if validation passes
         $checkStudent = Student::where('email', $request->email)->first();
     
-        if (empty($checkStudent)) {
+        if (empty($checkStudent))
+         {
             $student = new Student();
     
             $password = $request->input('password');
@@ -43,7 +44,7 @@ class StudentController extends Controller
             $student->password = Hash::make($password);
             $student->receive_updates = $request->input('receive_updates');
             $student->is_otp_verified = 0;
-            $student->otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+            $student->otp = generateRandomOtp(6);
             $student->status = 1;
             $student->sort_order = 1;
             $student->increment('sort_order');
@@ -79,18 +80,92 @@ class StudentController extends Controller
         
         $student = Student::where('id', $request->id)->where('otp', $request->otp)->first();
      
-        if (empty($student)) {
-            return response()->json(['message' => 'invalid OTP', 'status' => '0'], 422);
+        if (empty($student)) 
+        {
+            $response = [
+                'message' => 'invalid OTP',
+                'status' => '0'
+            ];
         }
-        else{
-
+        else
+        {
            $student->is_otp_verified = 1;
            $student->save();
-           return response()->json(['message' => 'OTP verified', 'status' => '1']);
+
+           $response = [
+            'message' => 'otp verified',
+            'status' => '1'
+          ];
         } 
+        return response()->json($response, 201);
     }
 
+    public function sendOtp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $checkLoginOtpVerification = Student::where('email', $request->email)->first();
+
+        if(empty($checkLoginOtpVerification))
+        {
+          $response = [
+            'message' => 'email not registered',
+            'status' => '0'
+          ];
+        }
+        else
+        {
+            $sendLoginOtp = new LoginOtpVerification();
+            $sendLoginOtp->email = $request->input('email');
+            $sendLoginOtp->otp = generateRandomOtp(6);
+            $sendLoginOtp->is_verified = 0;
+            $sendLoginOtp->save();
+
+            $response = [
+                'message' => 'otp send successfully please check email',
+                'status' => '1'
+            ];
+        }
+        return response()->json($response, 201);
+
+    }
+
+    public function verifyStudentLoginOtp(Request $request)
+    {
+        $verification = LoginOtpVerification::where('email', $request->email)->where('otp', $request->otp)->first();
+       
+        if($verification)
+        {
+            $verification->is_verified = 1;
+            $verification->save();
+
+            $response = [
+                'message' => 'otp verification successful',
+                'status' => '1'
+            ];
+        }
+        else
+        {
+            $response = [
+                'message' => 'you entered wrong otp',
+                'status' => '0'
+            ];
+        }
+        return response()->json($response, 201);
+
+    }
 }
+
+
+
+
+
     
 
 

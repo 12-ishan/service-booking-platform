@@ -47,6 +47,14 @@ if (! function_exists('imageUpload')) {
             return $media->id;
 
     }
+
+    if (! function_exists('generateRandomOtp')) {
+
+       function generateRandomOtp($number) {
+
+        return str_pad(rand(0, 999999), $number, '0', STR_PAD_LEFT);
+      }
+    }
 }
 
 
