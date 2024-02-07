@@ -34,3 +34,18 @@ Route::post('/v1/program-verify', [ProgramVerifyController::class, 'programVerif
 //Program-verify Api Route ends
 
 //Route::post('/organisation', [OrganisationController::class, 'store']);
+// Protected routes of product and logout
+Route::middleware('auth:sanctum')->group( function () {
+
+    // Route::post('/v1/program-test', [ProgramVerifyController::class, 'programTest']);
+    Route::post('/v1/program-test', [ProgramVerifyController::class, 'programTest']);
+
+
+    // Route::post('/logout', [LoginRegisterController::class, 'logout']);
+
+    // Route::controller(ProductController::class)->group(function() {
+    //     Route::post('/products', 'store');
+    //     Route::post('/products/{id}', 'update');
+    //     Route::delete('/products/{id}', 'destroy');
+    // });
+});
