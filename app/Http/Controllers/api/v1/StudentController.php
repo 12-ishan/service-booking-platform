@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Frontend\Student;
+use App\Models\Student;
 use App\Models\Frontend\LoginOtpVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 
@@ -110,9 +111,9 @@ class StudentController extends Controller
             return response()->json(['error' => $validator->errors()], 422);
         }
 
-        $checkLoginOtpVerification = Student::where('email', $request->email)->first();
+        $student = Student::where('email', $request->email)->first();
 
-        if(empty($checkLoginOtpVerification))
+        if(empty($student))
         {
           $response = [
             'message' => 'email not registered',
@@ -121,12 +122,23 @@ class StudentController extends Controller
         }
         else
         {
-            $sendLoginOtp = new LoginOtpVerification();
-            $sendLoginOtp->email = $request->input('email');
-            $sendLoginOtp->otp = generateRandomOtp(6);
-            $sendLoginOtp->is_verified = 0;
-            $sendLoginOtp->save();
+            $lovRecord = LoginOtpVerification::where('email', $request->email)->first();
 
+            if (empty($lovRecord))
+            {
+                $loginOtpVerification = new LoginOtpVerification();
+                $loginOtpVerification->email = $request->input('email');
+            } 
+            else 
+            {
+                $loginOtpVerification = LoginOtpVerification::find($lovRecord->id);
+              
+            }
+    
+            $loginOtpVerification->otp = generateRandomOtp(6);
+            $loginOtpVerification->is_verified = 0;
+            $loginOtpVerification->save();
+    
             $response = [
                 'message' => 'otp send successfully please check email',
                 'status' => '1'
@@ -138,12 +150,12 @@ class StudentController extends Controller
 
     public function verifyStudentLoginOtp(Request $request)
     {
-        $verification = LoginOtpVerification::where('email', $request->email)->where('otp', $request->otp)->first();
+        $lovRecord = LoginOtpVerification::where('email', $request->email)->where('otp', $request->otp)->first();
        
-        if($verification)
+        if($lovRecord)
         {
-            $verification->is_verified = 1;
-            $verification->save();
+            $lovRecord->is_verified = 1;
+            $lovRecord->save();
 
             $response = [
                 'message' => 'otp verification successful',
@@ -159,6 +171,70 @@ class StudentController extends Controller
         }
         return response()->json($response, 201);
 
+    }
+
+    public function studentLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:8'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+        $credentials = $request->only('email', 'password');
+        // echo '<pre>';
+        // print_r($credentials);
+        // die();
+
+        if (Auth::guard('student')->attempt($credentials)) {
+            $user = Auth::guard('student')->user();
+        
+            if ($user->status == 1) {
+                $token = $user->createToken($request->email)->plainTextToken;
+               // return redirect()->intended('student/dashboard');
+               $response = [
+                'message' => 'login success',
+                'status' => '1',
+                'token' => $token
+            ];
+                
+            }else{
+
+                Auth::guard('student')->logout(); 
+               
+               // return redirect()->route('studentLogin')->with('message', 'Invalid Access');
+               $response = [
+                'message' => 'invalid credentials',
+                'status' => '0'
+            ];
+                
+            }
+
+            // Authentication passed...
+            
+        }
+       // return Redirect::to("login")->with('message', 'Oppes! You have entered invalid credentials');
+       $response = [
+        'message' => 'Oppes! You have entered invalid credentials',
+        'status' => '0'
+    ];
+
+    return response()->json($response, 201);
+
+
+
+
+
+
+
+
+
+
+
+
+      
     }
 }
 
