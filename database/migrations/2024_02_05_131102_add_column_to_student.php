@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('student', function (Blueprint $table) {
             //
-            $table->tinyInteger('receive_updates')->after('password');
+            $table->tinyInteger('receive_updates')->nullable()->after('password');
             $table->tinyInteger('is_otp_verified')->after('receive_updates');
             $table->string('otp')->nullable()->after('is_otp_verified');
 
