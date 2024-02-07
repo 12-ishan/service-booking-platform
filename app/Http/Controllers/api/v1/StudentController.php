@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Student;
 use App\Models\Frontend\LoginOtpVerification;
+use App\Models\Frontend\ForgotPasswordOtpVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,7 @@ class StudentController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:student,email',
+            'phone_number' => 'required|unique:student',
             'password' => 'required|min:8',
         ]);
     
@@ -42,6 +44,7 @@ class StudentController extends Controller
             $student->first_name = $request->input('first_name');
             $student->last_name = $request->input('last_name');
             $student->email = $request->input('email');
+            $student->phone_number = $request->input('phone_number');
             $student->password = Hash::make($password);
             $student->receive_updates = $request->input('receive_updates');
             $student->is_otp_verified = 0;
@@ -217,6 +220,83 @@ class StudentController extends Controller
     
     return response()->json($response, 201);  
     }
+
+    public function sendForgotPasswordOtp(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'phone_number' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $student = Student::where('email', $request->email)->where('phone_number', $request->phone_number)->first();
+
+        if(empty($student))
+        {
+          $response = [
+            'message' => 'email and phone number not registered',
+            'status' => '0'
+          ];
+        }
+        else
+        {
+            $fpovRecord = ForgotPasswordOtpVerification::where('email', $request->email)->where('phone_number', $request->phone_number)->first();
+
+            if (empty($fpovRecord))
+            {
+                $forgotOtpVerification = new ForgotPasswordOtpVerification();
+                $forgotOtpVerification->email = $request->input('email');
+                $forgotOtpVerification->phone_number = $request->input('phone_number');
+            } 
+            else 
+            {
+                $forgotOtpVerification = ForgotPasswordOtpVerification::find($fpovRecord->id);
+            }
+    
+            $forgotOtpVerification->otp = generateRandomOtp(6);
+            $forgotOtpVerification->is_verified = 0;
+            $forgotOtpVerification->save();
+    
+            $response = [
+                'message' => 'otp send successfully please check phone number and email',
+                'status' => '1'
+            ];
+        }
+        return response()->json($response, 201);
+    }
+
+    public function verifyForgotPasswordOtp(Request $request)
+    {
+        $fovRecord = ForgotPasswordOtpVerification::where('email', $request->email)->where('otp', $request->otp)->first();
+       
+        if($fpovRecord)
+        {
+            $fpovRecord->is_verified = 1;
+            $fpovRecord->save();
+
+            $response = [
+                'message' => 'otp verification successful',
+                'status' => '1'
+            ];
+        }
+        else
+        {
+            $response = [
+                'message' => 'you entered wrong otp',
+                'status' => '0'
+            ];
+        }
+        return response()->json($response, 201);
+
+    }
+
+
+
+
+
 }
 
 
