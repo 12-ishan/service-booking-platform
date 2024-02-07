@@ -183,58 +183,39 @@ class StudentController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
+
         $credentials = $request->only('email', 'password');
-        // echo '<pre>';
-        // print_r($credentials);
-        // die();
 
         if (Auth::guard('student')->attempt($credentials)) {
+            
             $user = Auth::guard('student')->user();
         
             if ($user->status == 1) {
-                $token = $user->createToken($request->email)->plainTextToken;
-               // return redirect()->intended('student/dashboard');
+
+               $token = $user->createToken($request->email)->plainTextToken;
                $response = [
                 'message' => 'login success',
                 'status' => '1',
                 'token' => $token
-            ];
+               ];
                 
             }else{
 
-                Auth::guard('student')->logout(); 
+               Auth::guard('student')->logout(); 
                
-               // return redirect()->route('studentLogin')->with('message', 'Invalid Access');
                $response = [
                 'message' => 'invalid credentials',
                 'status' => '0'
+               ];       
+            }            
+        }else{
+            $response = [
+            'message' => 'Oppes! You have entered invalid credentials',
+            'status' => '0'
             ];
-                
-            }
-
-            // Authentication passed...
-            
         }
-       // return Redirect::to("login")->with('message', 'Oppes! You have entered invalid credentials');
-       $response = [
-        'message' => 'Oppes! You have entered invalid credentials',
-        'status' => '0'
-    ];
-
-    return response()->json($response, 201);
-
-
-
-
-
-
-
-
-
-
-
-
-      
+    
+    return response()->json($response, 201);  
     }
 }
 

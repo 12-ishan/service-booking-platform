@@ -34,6 +34,8 @@ class RegistrationController extends Controller
         $student->last_name = $request->input('lastName');
         $student->email = $request->input('email');
         $student->password = Hash::make($password);
+        
+        $student->is_otp_verified = 0;
         $student->status = 1;
         $student->sort_order = 1;
         $student->increment('sort_order');
