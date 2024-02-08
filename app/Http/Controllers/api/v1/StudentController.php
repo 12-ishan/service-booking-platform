@@ -270,7 +270,7 @@ class StudentController extends Controller
 
     public function verifyForgotPasswordOtp(Request $request)
     {
-        $fovRecord = ForgotPasswordOtpVerification::where('email', $request->email)->where('otp', $request->otp)->first();
+        $fpovRecord = ForgotPasswordOtpVerification::where('email', $request->email)->where('otp', $request->otp)->first();
        
         if($fpovRecord)
         {
@@ -291,6 +291,50 @@ class StudentController extends Controller
         }
         return response()->json($response, 201);
 
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:8'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $student = Student::where('email', $request->email)->first();
+
+        if(empty($student))
+        {
+            $response = [
+                'message' => 'email not exist',
+                'status' => '0'
+            ];
+        }
+        else
+        {
+            $existsOne = ForgotPasswordOtpVerification::where('is_verified', 1)->first();
+
+            if(empty($existsOne)){
+                $response = [
+                    'message' => 'not verified',
+                    'status' => '0'
+                ];
+            }
+            else{
+                $password = $request->input('password');
+                $student->password = Hash::make($password);
+                $student->save();
+
+                $response = [
+                    'message' => 'password reset successfully',
+                    'status' => '1'
+                ];
+            }
+        }
+        return response()->json($response, 201);
     }
 
 

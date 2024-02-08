@@ -29,6 +29,8 @@ Route::post('/v1/verify-student-login-otp', [StudentController::class, 'verifySt
 Route::post('/v1/student-login', [StudentController::class, 'studentLogin']);
 Route::post('/v1/send-forgot-password-otp', [StudentController::class, 'sendForgotPasswordOtp']);
 Route::post('/v1/verify-forgot-password-otp', [StudentController::class, 'verifyForgotPasswordOtp']);
+Route::post('/v1/reset-password', [StudentController::class, 'resetPassword']);
+
 
 //Public Api route ends
 
