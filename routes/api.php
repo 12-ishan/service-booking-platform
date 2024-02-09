@@ -34,7 +34,6 @@ Route::post('/v1/reset-password', [StudentController::class, 'resetPassword']);
 
 Route::post('/v1/save-applicant-details', [ApplicationsController::class, 'storeApplicant']);
 Route::get('/v1/get-applicant-details', [ApplicationsController::class, 'getApplicant']);
-Route::get('/v1/save-parent-details', [ApplicationsController::class, 'saveParent']);
 
 
 //Public Api route ends

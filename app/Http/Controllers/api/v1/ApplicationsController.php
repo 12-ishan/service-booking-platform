@@ -25,6 +25,10 @@ class ApplicationsController extends Controller
             return response()->json(['message' => 'Validation failed', 'errors' => $errors], 422);
         }
 
+        $checkApplication = Application::where('id', $request->application_id)->first();
+
+       if($checkApplication)
+       {
        $checkApplicant = ApplicantDetails::where('application_id', $request->application_id)->first();
 
        if(empty($checkApplicant))
@@ -64,6 +68,13 @@ class ApplicationsController extends Controller
            $applicant->sort_order = 1;
            $applicant->increment('sort_order');
            $applicant->save();
+        }
+        else{
+            $response = [
+                'message' => 'no record found',
+                'status' => '0'
+            ];
+        }
 
         return response()->json($response, 201);
     }
@@ -87,6 +98,4 @@ class ApplicationsController extends Controller
         } 
         return response()->json($response, 201);
     }
-
-
 }
