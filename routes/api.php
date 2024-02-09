@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\OrganisationController;
 use App\Http\Controllers\api\v1\StudentController;
 use App\Http\Controllers\api\v1\ProgramVerifyController;
+use App\Http\Controllers\api\v1\ApplicationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,10 @@ Route::post('/v1/student-login', [StudentController::class, 'studentLogin']);
 Route::post('/v1/send-forgot-password-otp', [StudentController::class, 'sendForgotPasswordOtp']);
 Route::post('/v1/verify-forgot-password-otp', [StudentController::class, 'verifyForgotPasswordOtp']);
 Route::post('/v1/reset-password', [StudentController::class, 'resetPassword']);
+
+Route::post('/v1/save-applicant-details', [ApplicationsController::class, 'storeApplicant']);
+Route::get('/v1/get-applicant-details', [ApplicationsController::class, 'getApplicant']);
+Route::get('/v1/save-parent-details', [ApplicationsController::class, 'saveParent']);
 
 
 //Public Api route ends
