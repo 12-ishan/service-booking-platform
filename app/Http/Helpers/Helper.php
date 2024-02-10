@@ -3,6 +3,8 @@ use Illuminate\Support\Facades\File;
 use App\Models\Admin\Media;
 // use App\Model\Admin\Setting;
 // use App\Model\Admin\Country;
+use App\Models\Admin\GlobalSetting;
+use App\Models\Admin\Setting;
 
 if (! function_exists('imageUpload')) {
 
@@ -50,11 +52,42 @@ if (! function_exists('imageUpload')) {
 
     if (! function_exists('generateRandomOtp')) {
 
-       function generateRandomOtp($number) {
+        function generateRandomOtp($number) {
+ 
+         return str_pad(rand(0, 999999), $number, '0', STR_PAD_LEFT);
+       }
+     }
 
-        return str_pad(rand(0, 999999), $number, '0', STR_PAD_LEFT);
-      }
-    }
+     if (! function_exists('getSetting')) {
+
+        function getSetting($key) {
+ 
+            $finalSetting = '';
+      
+            $organisationSetting = Setting::where('organisationId', 1)->first();
+           
+            if(isset($organisationSetting) && !empty($organisationSetting[$key])) {
+              
+            $orgSetting = json_decode($organisationSetting[$key], true);
+          
+            $finalSetting = $orgSetting;
+    
+           }
+    
+    
+            if(empty($finalSetting)){
+               
+                $settings = GlobalSetting::first(); // Assuming you have only one row in the settings table
+               
+                $globalSetting = json_decode($settings[$key], true);
+                
+                $finalSetting = $globalSetting; 
+    
+            }
+    
+            return $finalSetting;
+       }
+     }
 }
 
 
