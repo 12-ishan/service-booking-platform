@@ -26,30 +26,29 @@ class ApplicationsController extends Controller
         }
 
         $checkApplication = Application::where('id', $request->application_id)->first();
+        if(empty($checkApplication))
+        {
+            $response = [
+                'message' => 'application not exists',
+                'status' => '0',
+            ];
+        }
+        else{
 
-       if($checkApplication)
-       {
-       $checkApplicant = ApplicantDetails::where('application_id', $request->application_id)->first();
+        $checkApplicant = ApplicantDetails::where('application_id', $request->application_id)->first();
 
        if(empty($checkApplicant))
        {
            $applicant = new ApplicantDetails();
-           $response = [
-               'message' => 'personal details saved',
-               'status' => 'success',
-               'applicant' => $applicant->id
-           ];
+           $editStatus = 0;
        }
        else
        {
-           $applicant = $checkApplicant;
-           $response = [
-               'message' => 'personal details updated',
-               'status' => 'success',
-               'applicant' => $applicant->id
-           ];
+        $applicant = ApplicantDetails::find($checkApplicant->id);
+            
+        $editStatus = 1;
+           
        }
-
            $applicant->application_id = $request->input('application_id');
            $applicant->pd_first_name = $request->input('first_name');
            $applicant->pd_last_name = $request->input('last_name');
@@ -68,32 +67,39 @@ class ApplicationsController extends Controller
            $applicant->sort_order = 1;
            $applicant->increment('sort_order');
            $applicant->save();
+                  
+        if($editStatus == 1){
+            $response = [
+                'message' => 'personal details updated',
+                'status' => 'success'
+            ];
         }
         else{
             $response = [
-                'message' => 'no record found',
-                'status' => '0'
+                'message' => 'personal details saved',
+                'status' => 'success'
             ];
         }
-
+     }
         return response()->json($response, 201);
     }
 
     public function getApplicant(Request $request)
     {
-        $applicantDetails = ApplicantDetails::where('id', $request->id)->first();
+        $applicantDetails = ApplicantDetails::where('application_id', $request->application_id)->first();
        
         if (empty($applicantDetails)) {
            $response = [
-            'message' => 'no record found',
-            'status' => '0'
+            'status' => '0',
+            'message' => 'no record found'
            ];
         }
         else
         {
             $response = [
-                'data' =>  $applicantDetails,
-                'status' => '1'
+                'status' => '1',
+                'message' => 'success',
+                'data' =>  $applicantDetails
             ];
         } 
         return response()->json($response, 201);
