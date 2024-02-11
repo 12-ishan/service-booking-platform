@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\OrganisationController;
 use App\Http\Controllers\api\v1\StudentController;
 use App\Http\Controllers\api\v1\ProgramVerifyController;
 use App\Http\Controllers\api\v1\ApplicationsController;
+use App\Http\Controllers\api\v1\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Route::post('/v1/save-academics', [ApplicationsController::class, 'storeAcademic
 Route::get('/v1/get-academics', [ApplicationsController::class, 'getAcademics']);
 Route::post('/v1/save-awards-recognition', [ApplicationsController::class, 'storeAwardsRecognition']);
 Route::get('/v1/get-awards-recognition', [ApplicationsController::class, 'getAwardsRecognition']);
+
+Route::post('/v1/media-upload', [MediaController::class, 'mediaUpload']);
 
 
 //Public Api route ends
