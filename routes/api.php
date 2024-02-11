@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\OrganisationController;
 use App\Http\Controllers\api\v1\StudentController;
 use App\Http\Controllers\api\v1\ProgramVerifyController;
 use App\Http\Controllers\api\v1\ApplicationsController;
+use App\Http\Controllers\api\v1\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,8 @@ Route::post('/v1/reset-password', [StudentController::class, 'resetPassword']);
 
 Route::post('/v1/save-applicant-details', [ApplicationsController::class, 'storeApplicant']);
 Route::get('/v1/get-applicant-details', [ApplicationsController::class, 'getApplicant']);
+
+Route::post('/v1/media-upload', [MediaController::class, 'mediaUpload']);
 
 
 //Public Api route ends

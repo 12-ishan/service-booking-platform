@@ -49,16 +49,63 @@ if (! function_exists('imageUpload')) {
             return $media->id;
 
     }
+}
 
-    if (! function_exists('generateRandomOtp')) {
+
+if (! function_exists('imageUploadApi')) {
+
+    function imageUploadApi($image, $referencedImageId, $path) {
+   
+           $imageName =  time() . "_" . $image->getClientOriginalName();
+
+           $image->move(public_path($path), $imageName);  //Upload imgae to specified folder
+
+            $mediaRecord = Media::orderBy('sortOrder')->where('id', $referencedImageId)->first();
+
+            //Check if Media record exits for particular if not then add other wise update
+
+            if (empty($mediaRecord)) {
+
+                $media = new Media();
+
+            } else {
+
+                $media = Media::find($mediaRecord->id);
+
+                $image_path = $path . $media->name;  // Deleting image from directory
+
+                if (File::exists($image_path)) {
+                    
+                    File::delete($image_path);
+                }
+            }
+
+            $media->name = $imageName;
+
+            if (empty($mediaRecord)) {
+
+                // $media->userId = $userId;
+                $media->status = 1;
+                $media->sortOrder = 1;
+                $media->increment('sortOrder');
+            }
+
+            $media->save();
+
+            return $media->id;
+
+    }
+}
+
+if (! function_exists('generateRandomOtp')) {
 
         function generateRandomOtp($number) {
  
          return str_pad(rand(0, 999999), $number, '0', STR_PAD_LEFT);
        }
-     }
+}
 
-     if (! function_exists('getSetting')) {
+if (! function_exists('getSetting')) {
 
         function getSetting($key) {
  
@@ -87,10 +134,7 @@ if (! function_exists('imageUpload')) {
     
             return $finalSetting;
        }
-     }
 }
-
-
 
 
 // /////////
