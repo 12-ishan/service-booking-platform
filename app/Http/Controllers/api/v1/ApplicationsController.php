@@ -112,9 +112,8 @@ class ApplicationsController extends Controller
         }
         else
         {
-
             $applicantDetailsFrontend = $this->getModifiedaApplicantDetails($applicantDetails->toArray());
-
+                       
             $finalStepsOrder = getSetting("steps_order");
            
             //checking step status
@@ -149,11 +148,22 @@ class ApplicationsController extends Controller
 
         $modifiedArray = [
             'id' => $array['id'],
-            'application_id' => $array['application_id'],
-            'first_name' => $array['pd_first_name'],
-            'last_name' => $array['pd_last_name'],
+            'applicationId' => $array['application_id'],
+            'pdFirstName' => $array['pd_first_name'],
+            'pdLastName' => $array['pd_last_name'],
+            'pdEmail' => $array['pd_email'],
+            'pdMobileNumber' => $array['pd_mobile_number'],
+            'pdGenderId' =>  $array['pd_gender_id'],
+            'pdBloodGroupId' =>  $array['pd_bg_id'],
+            'pdDob' =>  $array['pd_dob'],
+            'pdCurrentDateTime' =>  $array['pd_cdate_time'],
+            'caHouseNumber' =>  $array['ca_house_number'],
+            'caCity' =>  $array['ca_city'],
+            'caStateId' =>  $array['ca_state_id'],
+            'caPincode' =>  $array['ca_pincode'],
+            'isPermanentAddress' =>  $array['is_permanent_address'],
             'status' => $array['status'],
-            'sort_order' => $array['sort_order'],
+           
         ];
     
         // Remove unwanted fields
@@ -191,6 +201,16 @@ class ApplicationsController extends Controller
 
             case 'applicant_details':
                 return ApplicantDetails::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
+
+            case 'parents_details':
+                return ParentDetails::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
+            
+            case 'academics':
+                return Academics::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
+            
+             
+            case 'awards':
+                return AwardsRecognition::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
                 
 
             // Add cases for other stages if needed
@@ -210,7 +230,7 @@ class ApplicationsController extends Controller
         }
 
         $percentage = round(($status1Iterations / $totalIterations) * 100, 2);
-
+       
         return $percentage;
     }
 
@@ -293,13 +313,67 @@ class ApplicationsController extends Controller
         }
         else
         {
+
+            $parentDetailsFrontend = $this->getModifiedParentDetails($parentDetails->toArray());
+                       
+            $finalStepsOrder = getSetting("steps_order");
+           
+            //checking step status
+            $stepWithStaus = $this->checkStepStatus($finalStepsOrder, $request->application_id);
+
+            $percentage = $this->calculateStatusPercentage($stepWithStaus);
+
+            //fetching next and prev steps
+            $currentStep = "parents_details";
+            $currentIndex = array_search($currentStep, $finalStepsOrder);
+           
+            $nextIndex = $currentIndex + 1;
+            $prevIndex = $currentIndex - 1;
+
             $response = [
                 'status' => '1',
                 'message' => 'success',
-                'data' =>  $parentDetails
+                'data' =>  [
+                    'fields' => $parentDetailsFrontend,
+                    'steps' => $stepWithStaus,
+                    'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
+                    'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
+                    'completePercentage' => $percentage
+                    
+                ]
             ];
+
         } 
         return response()->json($response, 201);
+    }
+
+    protected function getModifiedParentDetails($array){
+
+        $modifiedArray = [
+            'id' => $array['id'],
+            'applicationId' => $array['application_id'],
+            'fatherSalutation' => $array['father_salutation'],
+            'fatherName' => $array['father_name'],
+            'fatherMobileNumber' => $array['father_mobile'],
+            'FatherEmail' => $array['father_email'],
+            'fatherIsWorking' => $array['father_is_working'],
+            'motherSalutation' =>  $array['mother_salutation'],
+            'motherName' =>  $array['mother_name'],
+            'motherMobile' =>  $array['mother_mobile'],
+            'motherEmail' =>  $array['mother_email'],
+            'motherIsWorking' =>  $array['mother_is_working'],
+            'status' => $array['status'],
+           
+        ];
+    
+        // Remove unwanted fields
+        unset($modifiedArray['created_at']);
+        unset($modifiedArray['updated_at']);
+        unset($modifiedArray['sort_order']);
+    
+        // $modifiedArray now contains the modified array without created_at and updated_at
+        return $modifiedArray;
+
     }
 
     public function storeAcademics(Request $request)
@@ -385,13 +459,75 @@ class ApplicationsController extends Controller
         }
         else
         {
+            $academicsFrontend = $this->getModifiedAcademics($academics->toArray());
+                       
+            $finalStepsOrder = getSetting("steps_order");
+           
+            //checking step status
+            $stepWithStaus = $this->checkStepStatus($finalStepsOrder, $request->application_id);
+
+            $percentage = $this->calculateStatusPercentage($stepWithStaus);
+
+            //fetching next and prev steps
+            $currentStep = "academics";
+            $currentIndex = array_search($currentStep, $finalStepsOrder);
+           
+            $nextIndex = $currentIndex + 1;
+            $prevIndex = $currentIndex - 1;
+
             $response = [
                 'status' => '1',
                 'message' => 'success',
-                'data' =>  $academics
+                'data' =>  [
+                    'fields' => $academicsFrontend,
+                    'steps' => $stepWithStaus,
+                    'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
+                    'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
+                    'completePercentage' => $percentage
+                    
+                ]
             ];
         } 
         return response()->json($response, 201);
+    }
+
+    protected function getModifiedAcademics($array){
+
+        $modifiedArray = [
+            'id' => $array['id'],
+            'applicationId' => $array['application_id'],
+            'ugCollege' => $array['ug_college'],
+            'ugUniversity' => $array['ug_university'],
+            'ugDegree' => $array['ug_degree'],
+            'ugMode' => $array['ug_mode'],
+            'ugEnrollYear' => $array['ug_enroll_year'],
+            'ugPassYear' =>  $array['ug_pass_year'],
+            'ugPercentage' =>  $array['ug_percentage'],
+            'interDiplomaPursue' =>  $array['im_diploma_pursue'],
+            'interCollege' =>  $array['im_college'],
+            'interBoard' =>  $array['im_board'],
+            'interStream' =>  $array['im_stream'],
+            'interPercentage' =>  $array['im_percentage'],
+            'interEnrollYear' =>  $array['im_enroll_year'],
+            'interPassYear' =>  $array['im_pass_year'],
+            'hgSchool' =>  $array['hg_school'],
+            'hgBoard' => $array['hg_board'],
+            'hgPercentage' =>  $array['hg_percentage'],
+            'hgStream' =>  $array['hg_stream'],
+            'hgEnrollYear' =>  $array['hg_enroll_year'],
+            'hgPassYear' =>  $array['hg_pass_year'],
+            'status' => $array['status'],
+           
+        ];
+    
+        // Remove unwanted fields
+        unset($modifiedArray['created_at']);
+        unset($modifiedArray['updated_at']);
+        unset($modifiedArray['sort_order']);
+    
+        // $modifiedArray now contains the modified array without created_at and updated_at
+        return $modifiedArray;
+
     }
 
     public function storeAwardsRecognition(Request $request)
@@ -474,12 +610,68 @@ class ApplicationsController extends Controller
         }
         else
         {
+            $awardRecognitionFrontend = $this->getModifiedAwardRecognition($awardRecognition->toArray());
+                       
+            $finalStepsOrder = getSetting("steps_order");
+           
+            //checking step status
+            $stepWithStaus = $this->checkStepStatus($finalStepsOrder, $request->application_id);
+
+            $percentage = $this->calculateStatusPercentage($stepWithStaus);
+
+            //fetching next and prev steps
+            $currentStep = "awards";
+            $currentIndex = array_search($currentStep, $finalStepsOrder);
+           
+            $nextIndex = $currentIndex + 1;
+            $prevIndex = $currentIndex - 1;
+
             $response = [
                 'status' => '1',
                 'message' => 'success',
-                'data' =>  $awardRecognition
+                'data' =>  [
+                    'fields' => $awardRecognitionFrontend,
+                    'steps' => $stepWithStaus,
+                    'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
+                    'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
+                    'completePercentage' => $percentage
+                    
+                ]
             ];
         } 
         return response()->json($response, 201);
+    }
+
+    protected function getModifiedAwardRecognition($array){
+
+        $modifiedArray = [
+            'id' => $array['id'],
+            'applicationId' => $array['application_id'],
+            'awardName' => $array['ar_name'],
+            'firstAward' => $array['ar_first'],
+            'firstLevelAward' => $array['ar_level_first'],
+            'receiveYear' => $array['ar_fr_year'],
+            'secondAward' => $array['ar_second'],
+            'secondLevelAward' =>  $array['ar_level_second'],
+            'secondReceiveYear' =>  $array['ar_sr_year'],
+            'language1' =>  $array['lp_lang1'],
+            'language2' =>  $array['lp_lang2'],
+            'language1Proficiency' =>  $array['lp_p_lang1'],
+            'language2Proficiency' =>  $array['lp_p_lang2'],
+            'hobby1' =>  $array['ho_hobby1'],
+            'hobby2' =>  $array['ho_hobby2'],
+            'hobby3' =>  $array['ho_hobby3'],
+            'hobby4' =>  $array['ho_hobby4'],
+            'status' => $array['status'],
+           
+        ];
+    
+        // Remove unwanted fields
+        unset($modifiedArray['created_at']);
+        unset($modifiedArray['updated_at']);
+        unset($modifiedArray['sort_order']);
+    
+        // $modifiedArray now contains the modified array without created_at and updated_at
+        return $modifiedArray;
     }
 }
