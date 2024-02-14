@@ -41,6 +41,10 @@ Route::post('/v1/save-academics', [ApplicationsController::class, 'storeAcademic
 Route::get('/v1/get-academics', [ApplicationsController::class, 'getAcademics']);
 Route::post('/v1/save-awards-recognition', [ApplicationsController::class, 'storeAwardsRecognition']);
 Route::get('/v1/get-awards-recognition', [ApplicationsController::class, 'getAwardsRecognition']);
+Route::post('/v1/save-scholarship', [ApplicationsController::class, 'storeScholarship']);
+Route::get('/v1/get-scholarship', [ApplicationsController::class, 'getScholarship']);
+Route::post('/v1/save-document', [ApplicationsController::class, 'storeDocument']);
+Route::get('/v1/get-document', [ApplicationsController::class, 'getDocument']);
 
 Route::post('/v1/media-upload', [MediaController::class, 'mediaUpload']);
 

@@ -9,6 +9,8 @@ use App\Models\Frontend\ApplicantDetails;
 use App\Models\Frontend\ParentDetails;
 use App\Models\Frontend\Academics;
 use App\Models\Frontend\AwardsRecognition;
+use App\Models\Frontend\Scholarship;
+use App\Models\Frontend\Documents;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -208,11 +210,14 @@ class ApplicationsController extends Controller
             case 'academics':
                 return Academics::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
             
-             
             case 'awards':
                 return AwardsRecognition::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
-                
+            
+            case 'scholarship':
+                return Scholarship::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
 
+            case 'documents':
+                return Documents::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
             // Add cases for other stages if needed
 
             default:
@@ -662,6 +667,258 @@ class ApplicationsController extends Controller
             'hobby2' =>  $array['ho_hobby2'],
             'hobby3' =>  $array['ho_hobby3'],
             'hobby4' =>  $array['ho_hobby4'],
+            'status' => $array['status'],
+           
+        ];
+    
+        // Remove unwanted fields
+        unset($modifiedArray['created_at']);
+        unset($modifiedArray['updated_at']);
+        unset($modifiedArray['sort_order']);
+    
+        // $modifiedArray now contains the modified array without created_at and updated_at
+        return $modifiedArray;
+    }
+
+    public function storeScholarship(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'application_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return response()->json(['message' => 'Validation failed', 'errors' => $errors], 422);
+        }
+
+        $checkApplication = Application::where('id', $request->application_id)->first();
+
+        if(empty($checkApplication))
+        {
+            $response = [
+                'message' => 'application not exists',
+                'status' => '0',
+            ];
+        }
+        else
+        {
+            $checkScholarship = Scholarship::where('application_id',  $request->application_id)->first();
+
+            if(empty($checkScholarship))
+            {
+                $scholarship = new Scholarship();
+                $editStatus = 0;
+            }
+            else
+            {
+                 $scholarship = Scholarship::find($checkScholarship->id);  
+                 $editStatus = 1;    
+            }
+                $scholarship->application_id = $request->input('application_id');
+                $scholarship->merit_based_scholarship = $request->input('meritScholarship');
+                $scholarship->explanation_document_id = $request->input('document');
+                $scholarship->status = 1;
+                $scholarship->sort_order = 1;
+                $scholarship->increment('sort_order');
+                $scholarship->save();
+                       
+             if($editStatus == 1){
+                 $response = [
+                    'message' => 'scholarship details updated',
+                    'status' => 'success'
+                ];
+            }
+             else{
+                 $response = [
+                    'message' => 'scholarship details saved',
+                    'status' => 'success'
+                ];
+            }
+        }
+            return response()->json($response, 201);
+    }
+
+    public function getScholarship(Request $request)
+    {
+        $scholarship = Scholarship::where('application_id', $request->application_id)->first();
+       
+        if (empty($scholarship)) {
+           $response = [
+            'status' => '0',
+            'message' => 'no record found'
+           ];
+        }
+        else
+        {
+            $scholarshipFrontend = $this->getModifiedScholarship($scholarship->toArray());
+                       
+            $finalStepsOrder = getSetting("steps_order");
+           
+            //checking step status
+            $stepWithStaus = $this->checkStepStatus($finalStepsOrder, $request->application_id);
+
+            $percentage = $this->calculateStatusPercentage($stepWithStaus);
+
+            //fetching next and prev steps
+            $currentStep = "scholarship";
+            $currentIndex = array_search($currentStep, $finalStepsOrder);
+           
+            $nextIndex = $currentIndex + 1;
+            $prevIndex = $currentIndex - 1;
+
+            $response = [
+                'status' => '1',
+                'message' => 'success',
+                'data' =>  [
+                    'fields' => $scholarshipFrontend,
+                    'steps' => $stepWithStaus,
+                    'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
+                    'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
+                    'completePercentage' => $percentage
+                    
+                ]
+            ];
+        } 
+        return response()->json($response, 201);
+    }
+
+    protected function getModifiedScholarship($array){
+
+        $modifiedArray = [
+            'id' => $array['id'],
+            'applicationId' => $array['application_id'],
+            'meritBasedScholarshipId' => $array['merit_based_scholarship'],
+            'documentId' => $array['explanation_document_id'],
+            'status' => $array['status'],
+           
+        ];
+    
+        // Remove unwanted fields
+        unset($modifiedArray['created_at']);
+        unset($modifiedArray['updated_at']);
+        unset($modifiedArray['sort_order']);
+    
+        // $modifiedArray now contains the modified array without created_at and updated_at
+        return $modifiedArray;
+    }
+
+    public function storeDocument(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'application_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return response()->json(['message' => 'Validation failed', 'errors' => $errors], 422);
+        }
+
+        $checkApplication = Application::where('id', $request->application_id)->first();
+
+        if(empty($checkApplication))
+        {
+            $response = [
+                'message' => 'application not exists',
+                'status' => '0',
+            ];
+        }
+        else
+        {
+            $checkDocument = Documents::where('application_id',  $request->application_id)->first();
+
+            if(empty($checkDocument))
+            {
+                $document = new Documents();
+                $editStatus = 0;
+            }
+            else
+            {
+                 $document = Documents::find($checkDocument->id);  
+                 $editStatus = 1;    
+            }
+                $document->application_id = $request->input('application_id');
+                $document->highschool_markssheet_id = $request->input('highSchoolMarksheet');
+                $document->inter_markssheet_id = $request->input('interMarsheet');
+                $document->consolidated_marksheet_id = $request->input('consolidatedMarksheetId');
+                $document->consolidated_certificate_id = $request->input('consolidatedCertificateId');
+                $document->aadhar_card_id = $request->input('aadharCardId');
+                $document->signature_id = $request->input('signatureId');
+                $document->status = 1;
+                $document->sort_order = 1;
+                $document->increment('sort_order');
+                $document->save();
+                       
+             if($editStatus == 1){
+                 $response = [
+                    'message' => 'documents details updated',
+                    'status' => 'success'
+                ];
+            }
+             else{
+                 $response = [
+                    'message' => 'documents details saved',
+                    'status' => 'success'
+                ];
+            }
+        }
+            return response()->json($response, 201);
+    }
+
+    public function getDocument(Request $request)
+    {
+        $document = Documents::where('application_id', $request->application_id)->first();
+       
+        if (empty($document)) {
+           $response = [
+            'status' => '0',
+            'message' => 'no record found'
+           ];
+        }
+        else
+        {
+            $documentFrontend = $this->getModifiedDocument($document->toArray());
+                       
+            $finalStepsOrder = getSetting("steps_order");
+           
+            //checking step status
+            $stepWithStaus = $this->checkStepStatus($finalStepsOrder, $request->application_id);
+
+            $percentage = $this->calculateStatusPercentage($stepWithStaus);
+
+            //fetching next and prev steps
+            $currentStep = "documents";
+            $currentIndex = array_search($currentStep, $finalStepsOrder);
+           
+            $nextIndex = $currentIndex + 1;
+            $prevIndex = $currentIndex - 1;
+
+            $response = [
+                'status' => '1',
+                'message' => 'success',
+                'data' =>  [
+                    'fields' => $documentFrontend,
+                    'steps' => $stepWithStaus,
+                    'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
+                    'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
+                    'completePercentage' => $percentage
+                    
+                ]
+            ];
+        } 
+        return response()->json($response, 201);
+    }
+
+    protected function getModifiedDocument($array){
+
+        $modifiedArray = [
+            'id' => $array['id'],
+            'applicationId' => $array['application_id'],
+            'highSchoolMarksheetId' => $array['highschool_markssheet_id'],
+            'interMarksheetId' => $array['inter_markssheet_id'],
+            'consolidatedMarksheetId' => $array['consolidated_marksheet_id'],
+            'consolidatedCertificateId' => $array['consolidated_certificate_id'],
+            'aadharCardId' => $array['aadhar_card_id'],
+            'signatureId' => $array['signature_id'],
             'status' => $array['status'],
            
         ];
