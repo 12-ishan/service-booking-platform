@@ -97,6 +97,27 @@ if (! function_exists('imageUploadApi')) {
     }
 }
 
+if (! function_exists('getMediaName')) {
+
+    function getMediaName($id) {
+   
+
+            $mediaRecord = Media::orderBy('sortOrder')->where('id', $id)->first();
+
+            //Check if Media record exits for particular if not then add other wise update
+
+            if (empty($mediaRecord)) {
+
+              return 0;
+            } else {
+
+                return $mediaRecord->name;
+             
+            }
+
+    }
+}
+
 if (! function_exists('generateRandomOtp')) {
 
         function generateRandomOtp($number) {
@@ -125,11 +146,11 @@ if (! function_exists('getSetting')) {
             if(empty($finalSetting)){
                
                 $settings = GlobalSetting::first(); // Assuming you have only one row in the settings table
+            
+                $globalSetting = json_decode($settings[$key],true);
                
-                $globalSetting = json_decode($settings[$key], true);
-                
                 $finalSetting = $globalSetting; 
-    
+              
             }
     
             return $finalSetting;

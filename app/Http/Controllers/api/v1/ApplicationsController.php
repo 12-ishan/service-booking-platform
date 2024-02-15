@@ -72,6 +72,7 @@ class ApplicationsController extends Controller
            $applicant->pd_last_name = $request->input('last_name');
            $applicant->pd_email = $request->input('email');
            $applicant->pd_mobile_number = $request->input('mobile_number');
+           $applicant->pd_profile_id = $request->input('profile_upload');
            $applicant->pd_gender_id =  $request->input('gender');
            $applicant->pd_bg_id = $request->input('blood_group');
            $applicant->pd_dob = $request->input('date_of_birth');
@@ -114,7 +115,11 @@ class ApplicationsController extends Controller
         }
         else
         {
+            $applicantDetailsFrontend = '';
+
+            if(!empty($applicantDetails)){
             $applicantDetailsFrontend = $this->getModifiedaApplicantDetails($applicantDetails->toArray());
+            }
                        
             $finalStepsOrder = getSetting("steps_order");
            
@@ -155,6 +160,7 @@ class ApplicationsController extends Controller
             'pdLastName' => $array['pd_last_name'],
             'pdEmail' => $array['pd_email'],
             'pdMobileNumber' => $array['pd_mobile_number'],
+            'pdProfile' => url('/') . "/uploads/applications/" . getMediaName($array['pd_profile_id']),
             'pdGenderId' =>  $array['pd_gender_id'],
             'pdBloodGroupId' =>  $array['pd_bg_id'],
             'pdDob' =>  $array['pd_dob'],
@@ -322,8 +328,9 @@ class ApplicationsController extends Controller
         }
         else
         {
-
-            $parentDetailsFrontend = $this->getModifiedParentDetails($parentDetails->toArray());
+            if(!empty($parentDetails)){
+                $parentDetailsFrontend = $this->getModifiedParentDetails($parentDetails->toArray());
+            }
                        
             $finalStepsOrder = getSetting("steps_order");
            
@@ -468,7 +475,10 @@ class ApplicationsController extends Controller
         }
         else
         {
+            $academicsFrontend = '';
+            if(!empty($academics)){
             $academicsFrontend = $this->getModifiedAcademics($academics->toArray());
+            }
                        
             $finalStepsOrder = getSetting("steps_order");
            
@@ -619,8 +629,12 @@ class ApplicationsController extends Controller
         }
         else
         {
+            $awardRecognitionFrontend = '';
+
+            if(!empty($awardRecognition)){
             $awardRecognitionFrontend = $this->getModifiedAwardRecognition($awardRecognition->toArray());
-                       
+            }
+
             $finalStepsOrder = getSetting("steps_order");
            
             //checking step status
@@ -754,8 +768,12 @@ class ApplicationsController extends Controller
         }
         else
         {
+            $scholarshipFrontend = '';
+
+            if(!empty($scholarship)){
             $scholarshipFrontend = $this->getModifiedScholarship($scholarship->toArray());
-                       
+            }
+        
             $finalStepsOrder = getSetting("steps_order");
            
             //checking step status
@@ -792,7 +810,7 @@ class ApplicationsController extends Controller
             'id' => $array['id'],
             'applicationId' => $array['application_id'],
             'meritBasedScholarshipId' => $array['merit_based_scholarship'],
-            'documentId' => $array['explanation_document_id'],
+            'explanationDocument' => url('/') . "/uploads/applications/" . getMediaName($array['explanation_document_id']),
             'status' => $array['status'],
            
         ];
@@ -880,7 +898,12 @@ class ApplicationsController extends Controller
         }
         else
         {
+
+            $documentFrontend = '';
+
+            if(!empty($document)){
             $documentFrontend = $this->getModifiedDocument($document->toArray());
+            }
                        
             $finalStepsOrder = getSetting("steps_order");
            
@@ -917,12 +940,12 @@ class ApplicationsController extends Controller
         $modifiedArray = [
             'id' => $array['id'],
             'applicationId' => $array['application_id'],
-            'highSchoolMarksheetId' => $array['highschool_markssheet_id'],
-            'interMarksheetId' => $array['inter_markssheet_id'],
-            'consolidatedMarksheetId' => $array['consolidated_marksheet_id'],
-            'consolidatedCertificateId' => $array['consolidated_certificate_id'],
-            'aadharCardId' => $array['aadhar_card_id'],
-            'signatureId' => $array['signature_id'],
+            'highschoolMarksheet' => url('/') . "/uploads/applications/" . getMediaName($array['highschool_markssheet_id']),
+            'interMarksheet' => url('/') . "/uploads/applications/" . getMediaName($array['inter_markssheet_id']),
+            'consolidatedMarksheet' => url('/') . "/uploads/applications/" . getMediaName($array['consolidated_marksheet_id']),
+            'consolidatedCertificate' => url('/') . "/uploads/applications/" . getMediaName($array['consolidated_certificate_id']),
+            'aadharCard' => url('/') . "/uploads/applications/" . getMediaName($array['aadhar_card_id']),
+            'signature' => url('/') . "/uploads/applications/" . getMediaName($array['signature_id']),
             'status' => $array['status'],
            
         ];
@@ -951,28 +974,48 @@ class ApplicationsController extends Controller
         {
             $applicantDetails = ApplicantDetails::where('application_id', $request->application_id)->first();
 
+           
+            $applicantDetailsFrontend = '';
+            if(!empty($applicantDetails)){
             $applicantDetailsFrontend = $this->getModifiedaApplicantDetails($applicantDetails->toArray());
+            }
+
 
             $parentDetails = ParentDetails::where('application_id', $request->application_id)->first();
 
+            $parentDetailsFrontend = '';
+            if(!empty($parentDetails)){
             $parentDetailsFrontend = $this->getModifiedParentDetails($parentDetails->toArray());
+            }
 
             $academics = Academics::where('application_id', $request->application_id)->first();
 
+            $academicsFrontend = '';
+            if(!empty($academics)){
             $academicsFrontend = $this->getModifiedAcademics($academics->toArray());
+            }
 
             $awardsRecognition = AwardsRecognition::where('application_id', $request->application_id)->first();
 
+            $awardRecognitionFrontend = '';
+            if(!empty($awardsRecognition)){
             $awardRecognitionFrontend = $this->getModifiedAwardRecognition($awardsRecognition->toArray());
+            }
                         
 
             $scholarship = Scholarship::where('application_id', $request->application_id)->first();
 
+            $scholarshipFrontend = '';
+            if(!empty($scholarship)){
             $scholarshipFrontend = $this->getModifiedScholarship($scholarship->toArray());
+            }
 
             $documents = Documents::where('application_id', $request->application_id)->first();
 
+            $documentFrontend = '';
+            if(!empty($documents)){
             $documentFrontend = $this->getModifiedDocument($documents->toArray());
+            }
                         
             $finalStepsOrder = getSetting("steps_order");
         
@@ -992,7 +1035,12 @@ class ApplicationsController extends Controller
                 'status' => '1',
                 'message' => 'success',
                 'data' =>  [
-                    'fields' => $applicantDetailsFrontend, $parentDetailsFrontend, $academicsFrontend, $awardRecognitionFrontend, $scholarshipFrontend, $documentFrontend,
+                    'applicantDetailsFields' => $applicantDetailsFrontend, 
+                    'parentDetailsFields' => $parentDetailsFrontend,
+                    'academicsFields' => $academicsFrontend,
+                    'awardRecognitionFields' => $awardRecognitionFrontend,
+                    'scholarshipFields' => $scholarshipFrontend,
+                    'documentsFields' => $documentFrontend,
                     'steps' => $stepWithStaus,
                     'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
                     'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
@@ -1014,7 +1062,7 @@ class ApplicationsController extends Controller
             $application->status = 1;
             $application->save();
             $response = [
-                'message' => 'form saved',
+                'message' => 'preview saved successfully',
                 'status' => '1',
             ];
         }

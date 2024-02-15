@@ -18,4 +18,6 @@ class Application extends Model
         return $this->belongsTo('App\Models\Admin\Program', 'programId', 'id');
     }
 
+   
+
 }
