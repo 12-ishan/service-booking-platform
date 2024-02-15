@@ -15,4 +15,9 @@ class Scholarship extends Model
     {
         return $this->hasMany('App\Models\Admin\Application');
     }
+
+    public function explanationDocument()
+    {
+        return $this->belongsTo('App\Models\Admin\Media', 'explanation_document_id', 'id');
+    }
 }

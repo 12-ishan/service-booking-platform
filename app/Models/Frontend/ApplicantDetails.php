@@ -29,4 +29,13 @@ class ApplicantDetails extends Model
     {
         return $this->hasMany('App\Models\Admin\State');
     }
+
+    public function pdProfile()
+    {
+        return $this->belongsTo('App\Models\Admin\Media', 'pd_profile_id', 'id');
+    }
+
+    
+
+
 }

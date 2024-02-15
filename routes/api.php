@@ -45,6 +45,9 @@ Route::post('/v1/save-scholarship', [ApplicationsController::class, 'storeSchola
 Route::get('/v1/get-scholarship', [ApplicationsController::class, 'getScholarship']);
 Route::post('/v1/save-document', [ApplicationsController::class, 'storeDocument']);
 Route::get('/v1/get-document', [ApplicationsController::class, 'getDocument']);
+Route::get('/v1/form-preview', [ApplicationsController::class, 'formPreview']);
+Route::post('/v1/save-form-preview', [ApplicationsController::class, 'saveFormPreview']);
+
 
 Route::post('/v1/media-upload', [MediaController::class, 'mediaUpload']);
 

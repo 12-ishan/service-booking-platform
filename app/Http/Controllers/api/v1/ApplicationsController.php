@@ -218,6 +218,10 @@ class ApplicationsController extends Controller
 
             case 'documents':
                 return Documents::where('application_id', $applicationId)->where('status', 1)->exists() ? 1 : 0;
+
+            case 'preview':
+                return 0;
+
             // Add cases for other stages if needed
 
             default:
@@ -930,5 +934,97 @@ class ApplicationsController extends Controller
     
         // $modifiedArray now contains the modified array without created_at and updated_at
         return $modifiedArray;
+    }
+
+    public function formPreview(Request $request)
+    {
+
+        $applicant = Application::where('id', $request->application_id)->first();
+       
+        if (empty($applicant)) {
+           $response = [
+            'status' => '0',
+            'message' => 'no record found'
+           ];
+        }
+        else
+        {
+            $applicantDetails = ApplicantDetails::where('application_id', $request->application_id)->first();
+
+            $applicantDetailsFrontend = $this->getModifiedaApplicantDetails($applicantDetails->toArray());
+
+            $parentDetails = ParentDetails::where('application_id', $request->application_id)->first();
+
+            $parentDetailsFrontend = $this->getModifiedParentDetails($parentDetails->toArray());
+
+            $academics = Academics::where('application_id', $request->application_id)->first();
+
+            $academicsFrontend = $this->getModifiedAcademics($academics->toArray());
+
+            $awardsRecognition = AwardsRecognition::where('application_id', $request->application_id)->first();
+
+            $awardRecognitionFrontend = $this->getModifiedAwardRecognition($awardsRecognition->toArray());
+                        
+
+            $scholarship = Scholarship::where('application_id', $request->application_id)->first();
+
+            $scholarshipFrontend = $this->getModifiedScholarship($scholarship->toArray());
+
+            $documents = Documents::where('application_id', $request->application_id)->first();
+
+            $documentFrontend = $this->getModifiedDocument($documents->toArray());
+                        
+            $finalStepsOrder = getSetting("steps_order");
+        
+            //checking step status
+            $stepWithStaus = $this->checkStepStatus($finalStepsOrder, $request->application_id);
+
+            $percentage = $this->calculateStatusPercentage($stepWithStaus);
+
+            //fetching next and prev steps
+            $currentStep = "preview";
+            $currentIndex = array_search($currentStep, $finalStepsOrder);
+        
+            $nextIndex = $currentIndex + 1;
+            $prevIndex = $currentIndex - 1;
+
+            $response = [
+                'status' => '1',
+                'message' => 'success',
+                'data' =>  [
+                    'fields' => $applicantDetailsFrontend, $parentDetailsFrontend, $academicsFrontend, $awardRecognitionFrontend, $scholarshipFrontend, $documentFrontend,
+                    'steps' => $stepWithStaus,
+                    'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
+                    'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
+                    'completePercentage' => $percentage
+                    
+                ]
+            ];
+        }
+
+        return response()->json($response, 201);
+    }
+
+    public function saveFormPreview(Request $request)
+    {
+        $application = Application::where('id', $request->application_id)->first();
+
+        if($application)
+        {
+            $application->status = 1;
+            $application->save();
+            $response = [
+                'message' => 'form saved',
+                'status' => '1',
+            ];
+        }
+        else
+        {
+            $response = [
+                'message' => 'application not exists',
+                'status' => '0',
+            ];
+        }
+        return response()->json($response, 201);
     }
 }
