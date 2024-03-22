@@ -4,6 +4,15 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Application;
+use App\Models\Admin\State;
+use App\Models\Admin\Gender;
+use App\Models\Admin\BloodGroup;
+use App\Models\Admin\City;
+use App\Models\Admin\Salutation;
+use App\Models\Admin\Degree;
+use App\Models\Admin\Mode;
+use App\Models\Admin\Stream;
+use App\Models\Admin\Board;
 use App\Models\Frontend\ApplicantDetails;
 
 use App\Models\Frontend\ParentDetails;
@@ -33,7 +42,7 @@ class ApplicationsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:applicant_details,pd_email',
             'mobile_number' => 'required',
             'application_id' => 'required'
         ]);
@@ -81,7 +90,11 @@ class ApplicationsController extends Controller
            $applicant->ca_city = $request->input('city');
            $applicant->ca_state_id = $request->input('state');
            $applicant->ca_pincode = $request->input('pincode');
-           $applicant->is_permanent_address = $request->input('is_permanent_address');
+           $applicant->is_permanent_address = $request->input('isPermanentAddress');
+           $applicant->pe_house_number = $request->input('pehouseNumber');
+           $applicant->pe_city = $request->input('peCity');
+           $applicant->pe_state_id = $request->input('peState');
+           $applicant->pe_pincode = $request->input('pePincode');
            $applicant->status = 1;
            $applicant->sort_order = 1;
            $applicant->increment('sort_order');
@@ -107,13 +120,13 @@ class ApplicationsController extends Controller
     {
         $applicantDetails = ApplicantDetails::where('application_id', $request->application_id)->first();
     
-        if (empty($applicantDetails)) {
-           $response = [
-            'status' => '0',
-            'message' => 'no record found'
-           ];
-        }
-        else
+        // if (empty($applicantDetails)) {
+        //    $response = [
+        //     'status' => '0',
+        //     'message' => 'no record found'
+        //    ];
+        // }
+        if(1)
         {
             $applicantDetailsFrontend = '';
 
@@ -123,9 +136,10 @@ class ApplicationsController extends Controller
                        
             $finalStepsOrder = getSetting("steps_order");
            
+           
             //checking step status
             $stepWithStaus = $this->checkStepStatus($finalStepsOrder, $request->application_id);
-
+           
             $percentage = $this->calculateStatusPercentage($stepWithStaus);
 
             //fetching next and prev steps
@@ -135,12 +149,27 @@ class ApplicationsController extends Controller
             $nextIndex = $currentIndex + 1;
             $prevIndex = $currentIndex - 1;
 
+            $gender = Gender::where('status', 1)->pluck('name', 'id')->toArray();
+
+            //$bloodGroup = BloodGroup::where('status', 1)->pluck('name');
+           
+            $bloodGroup = BloodGroup::where('status', 1)->pluck('name', 'id')->toArray();
+
+            $city = City::where('status', 1)->pluck('name', 'id')->toArray();
+
+            $state = State::where('status', 1)->pluck('name', 'id')->toArray();
+
             $response = [
                 'status' => '1',
                 'message' => 'success',
                 'data' =>  [
                     'fields' => $applicantDetailsFrontend,
+                    'gender' => $gender,
+                    'bloodGroup' => $bloodGroup,
+                    'city' => $city,
+                    'state' => $state,
                     'steps' => $stepWithStaus,
+                    'currentStep' => $currentStep,
                     'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
                     'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
                     'completePercentage' => $percentage
@@ -163,15 +192,18 @@ class ApplicationsController extends Controller
             'pdProfile' => url('/') . "/uploads/applications/" . getMediaName($array['pd_profile_id']),
             'pdGenderId' =>  $array['pd_gender_id'],
             'pdBloodGroupId' =>  $array['pd_bg_id'],
-            'pdDob' =>  $array['pd_dob'],
+            'pdDob' =>  formatDate($array['pd_dob']),
             'pdCurrentDateTime' =>  $array['pd_cdate_time'],
             'caHouseNumber' =>  $array['ca_house_number'],
             'caCity' =>  $array['ca_city'],
             'caStateId' =>  $array['ca_state_id'],
             'caPincode' =>  $array['ca_pincode'],
             'isPermanentAddress' =>  $array['is_permanent_address'],
-            'status' => $array['status'],
-           
+            'peHouseNumber' => $array['pe_house_number'],
+            'peCity' => $array['pe_city'],
+            'peState' => $array['pe_state_id'],
+            'pePincode' => $array['pe_pincode'],
+            'status' => $array['status']
         ];
     
         // Remove unwanted fields
@@ -197,8 +229,7 @@ class ApplicationsController extends Controller
             $updatedStatusArray[$i]['status'] = $status;
 
             $i++;
-
-        }
+    }
         return $updatedStatusArray;
 
     }
@@ -320,14 +351,16 @@ class ApplicationsController extends Controller
     {
         $parentDetails = ParentDetails::where('application_id', $request->application_id)->first();
        
-        if (empty($parentDetails)) {
-           $response = [
-            'status' => '0',
-            'message' => 'no record found'
-           ];
-        }
-        else
+        // if (empty($parentDetails)) {
+        //    $response = [
+        //     'status' => '0',
+        //     'message' => 'no record found'
+        //    ];
+        // }
+        if(1)
         {
+            $parentDetailsFrontend = '';
+
             if(!empty($parentDetails)){
                 $parentDetailsFrontend = $this->getModifiedParentDetails($parentDetails->toArray());
             }
@@ -346,11 +379,14 @@ class ApplicationsController extends Controller
             $nextIndex = $currentIndex + 1;
             $prevIndex = $currentIndex - 1;
 
+            $salutation = Salutation::where('status', 1)->pluck('name');
+
             $response = [
                 'status' => '1',
                 'message' => 'success',
                 'data' =>  [
                     'fields' => $parentDetailsFrontend,
+                    'salutation' => $salutation,
                     'steps' => $stepWithStaus,
                     'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
                     'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
@@ -494,11 +530,23 @@ class ApplicationsController extends Controller
             $nextIndex = $currentIndex + 1;
             $prevIndex = $currentIndex - 1;
 
+            $degree = Degree::where('status', 1)->pluck('name');
+
+            $mode = Mode::where('status', 1)->pluck('name');
+
+            $stream = Stream::where('status', 1)->pluck('name');
+
+            $board = Board::where('status', 1)->pluck('name');
+
             $response = [
                 'status' => '1',
                 'message' => 'success',
                 'data' =>  [
                     'fields' => $academicsFrontend,
+                    'degree' => $degree,
+                    'mode' => $mode,
+                    'stream' => $stream,
+                    'board' => $board,
                     'steps' => $stepWithStaus,
                     'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
                     'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,
@@ -649,11 +697,17 @@ class ApplicationsController extends Controller
             $nextIndex = $currentIndex + 1;
             $prevIndex = $currentIndex - 1;
 
+            $firstArLevel = AwardsRecognition::where('status', 1)->pluck('ar_level_first');
+
+            $langSecondProficiency = AwardsRecognition::where('status', 1)->pluck('lp_p_lang2');
+
             $response = [
                 'status' => '1',
                 'message' => 'success',
                 'data' =>  [
                     'fields' => $awardRecognitionFrontend,
+                    'awardLevel' => $firstArLevel,
+                    'languageProficiency' => $langSecondProficiency,
                     'steps' => $stepWithStaus,
                     'nextStep' => isset($finalStepsOrder[$nextIndex]) ? $finalStepsOrder[$nextIndex] : -1,
                     'prevStep' => isset($finalStepsOrder[$prevIndex]) ? $finalStepsOrder[$prevIndex]  : -1,

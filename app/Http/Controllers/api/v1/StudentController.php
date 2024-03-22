@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Student;
+use App\Models\Admin\Application;
 use App\Models\Frontend\LoginOtpVerification;
 use App\Models\Frontend\ForgotPasswordOtpVerification;
 use Illuminate\Http\Request;
@@ -192,14 +193,22 @@ class StudentController extends Controller
         if (Auth::guard('student')->attempt($credentials)) {
             
             $user = Auth::guard('student')->user();
-        
+          
             if ($user->status == 1) {
 
+               $studentId = Auth::guard('student')->user()->id; 
+
+
+              // $applicationId = Application::select('id')->where('student_id',  $studentId )->first();
+              $applicationId = Application::where('student_id', $studentId)->pluck('id')->first();
+               
                $token = $user->createToken($request->email)->plainTextToken;
+
                $response = [
                 'message' => 'login success',
                 'status' => '1',
-                'token' => $token
+                'token' => $token,
+                'applicationId' => $applicationId
                ];
                 
             }else{
@@ -336,11 +345,6 @@ class StudentController extends Controller
         }
         return response()->json($response, 201);
     }
-
-
-
-
-
 }
 
 

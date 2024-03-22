@@ -157,6 +157,14 @@ if (! function_exists('getSetting')) {
        }
 }
 
+if (! function_exists('formatDate')) {
+
+    function formatDate($date) {
+        $formattedDate = date('d-m-y', strtotime($date));
+        return $formattedDate;
+    }
+}
+
 
 // /////////
 
