@@ -17,7 +17,7 @@
                                     <button type="button" class="btn btn-flat btn-secondary mb-3" onclick="checkAll(1)">Check All</button>
                                     <button type="button" class="btn btn-flat btn-secondary mb-3" onclick="checkAll(0)">Uncheck</button>
 
-                                    <button type="button" class="btn btn-flat btn-danger mb-3" onclick="deleteAll('deleteAllContact','Delete these Contact\'s details?','Are you sure you want to delete these Contact\'s details?');">
+                                    <button type="button" class="btn btn-flat btn-danger mb-3" onclick="deleteAll('deleteAllCategory','Delete these categories\'s details?','Are you sure you want to delete these categories\'s details?');">
                                         Delete</button>
 
                                     <div class="loading"></div>
@@ -32,18 +32,18 @@
                                     </a>
 
 
-                                    <a href="{{route('contact.index')}}">
+                                    <a href="{{route('category.index')}}">
                                         <button type="button" class="btn btn-flat btn-secondary mb-3">Refresh</button>
                                     </a>
 
-                                    <a href="{{route('contact.create')}}">
-                                        <button type="button" class="btn btn-flat btn-secondary mb-3">Add Contact</button>
+                                    <a href="{{route('category.create')}}">
+                                        <button type="button" class="btn btn-flat btn-secondary mb-3">Add Category</button>
                                     </a>
 
 
-<!--                                     <a href="{{route('contact.create')}}">
- -->                                    <!-- <a href="{{ url('/console/contact/create') }}"> -->
-                                      <!--   <button type="button" class="btn btn-flat btn-secondary mb-3">Add contact</button>
+<!--                                     <a href="{{route('category.create')}}">
+ -->                                    <!-- <a href="{{ url('/console/ourServices/create') }}"> -->
+                                      <!--   <button type="button" class="btn btn-flat btn-secondary mb-3">Add ourServices</button>
                                     </a> -->
 
                                 </div>
@@ -54,23 +54,21 @@
                     </div>
                 </div>
 
-                <form method="post" id="deleteAllContact">
+                <form method="post" id="deleteAllCategory">
 
                     <div class="data-tables">
-                        <table id="contactTable" class="text-center">
+                        <table id="categoryTable" class="text-center">
                             <thead class="bg-light text-capitalize">
                                 <tr>
                                     <th width="5%">Seq.</th>
                                     <th style="width:2px;max-width:2px;"></th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Message</th>
+                                    <th>Title</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($contact as $value)
+                                @foreach($category as $value)
 
                                 <tr id="item{{$value->id}}">
                                     <td> {{$loop->iteration}} </td>
@@ -78,24 +76,13 @@
                                         <input type="checkbox" class="checkBoxClass" name="deleterecords[]" value="{{$value->id}}">
                                     </td>
 
-                                   <td>@isset($value->name)
-                                    {{$value->name}}
-                                    @else
-                                    NA
-                                    @endif</td>
-                                    <td>@isset($value->email)
-                                    {{$value->email}}
-                                    @else
-                                    NA
-                                    @endif</td>
-                                     <td>@isset($value->message)
-                                    {{$value->message}}
+                                   <td>@isset($value->title)
+                                    {{$value->title}}
                                     @else
                                     NA
                                     @endif</td>
                              
                                     <td>
-                
                                         <label class="label-switch switch-success">
                                             <input type="checkbox" class="switch switch-bootstrap status" name="status" data-id="{{$value->id}}" @if($value->status == 1) checked="checked" @endif /> 
                                             <span class="lable"></span>
@@ -108,8 +95,8 @@
                                             Action
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{route('contact.edit', $value->id)}}">Edit</a>
-                                            <a class="dropdown-item" onclick="deleteRecord('{{$value->id}}','Delete this Contact details?','Are you sure you want to delete this Contact details?');">Delete</a>
+                                            <a class="dropdown-item" href="{{route('category.edit', $value->id)}}">Edit</a>
+                                            <a class="dropdown-item" onclick="deleteRecord('{{$value->id}}','Delete this category details?','Are you sure you want to delete this category details?');">Delete</a>
                                         </div>
                                     </td>
 
@@ -129,7 +116,7 @@
 </div>
 
 @section('js')
-<script src="{{ asset('assets/admin/js/console/contact.js') }}"></script>
+<script src="{{ asset('assets/admin/js/console/categoryManager.js') }}"></script>
 @append
 
 @endsection

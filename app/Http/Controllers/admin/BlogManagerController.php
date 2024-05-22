@@ -4,11 +4,13 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Contact;
+use App\Models\Admin\BlogManager;
+use App\Models\Admin\BlogCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 
-class ContactController extends Controller
+class BlogManagerController extends Controller
 {
 
     public function __construct()
@@ -30,12 +32,11 @@ class ContactController extends Controller
     {
         $data = array();
 
-        $data["contact"] = Contact::orderBy('sortOrder')->get();
-      
+        $data["blog"] = BlogManager::orderBy('sortOrder')->get();
 
-        $data["pageTitle"] = 'Manage Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.manage')->with($data);
+        $data["pageTitle"] = 'Manage Blog';
+        $data["activeMenu"] = 'blog Manager';
+        return view('admin.blogManager.manage')->with($data);
     }
 
     /**
@@ -47,9 +48,11 @@ class ContactController extends Controller
     {
         $data = array();
 
-        $data["pageTitle"] = 'Add Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.create')->with($data);
+        $data["category"] = BlogCategory::where('status',1)->orderBy('sortOrder')->get();
+
+        $data["pageTitle"] = 'Add blog';
+        $data["activeMenu"] = 'blog Manager';
+        return view('admin.blogManager.create')->with($data);
     }
 
     /**
@@ -61,25 +64,34 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:contact',
+            'title' => 'required'
         ]);
 
-        $contact = new Contact();
+        $blog = new BlogManager();
 
-        $contact->name = $request->input('name');
-        $contact->email = $request->input('email');
-        $contact->phone = $request->input('phone');
-        $contact->message = $request->input('message');
+        if ($request->hasFile('image')) {  
+
+            $mediaId = imageUpload($request->image, $blog->image_id, $this->userId, "uploads/blogImage/"); 
+           
+            $blog->image_id = $mediaId;
+ 
+         }
+
+        $blog->category_id = $request->input('categoryId');
+        $blog->title = $request->input('title');
+        $blog->slug = str::slug($request->input('title'));
+        $blog->published_by = $request->input('publishedBy');
+        $blog->published_on = $request->input('publishedDate');
+        $blog->description = $request->input('description');
        
-        $contact->status = 1;
-        $contact->sortOrder = 1;
+        $blog->status = 1;
+        $blog->sortOrder = 1;
 
-        $contact->increment('sortOrder');
+        $blog->increment('sortOrder');
 
-        $contact->save();
+        $blog->save();
 
-        return redirect()->route('contact.index')->with('message', 'Contact Added Successfully');
+        return redirect()->route('blog.index')->with('message', 'Blog Added Successfully');
     }
 
     /**
@@ -104,12 +116,13 @@ class ContactController extends Controller
         
         $data = array();
 
-        $data['contact'] = Contact::find($id);
+        $data['blog'] = BlogManager::find($id);
+        $data["category"] = BlogCategory::orderBy('sortOrder')->get();
 
         $data["editStatus"] = 1;
-        $data["pageTitle"] = 'Update Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.create')->with($data);
+        $data["pageTitle"] = 'Update Blog';
+        $data["activeMenu"] = 'blog Manager';
+        return view('admin.blogManager.create')->with($data);
     }
 
     /**
@@ -123,21 +136,31 @@ class ContactController extends Controller
     {
 
         $this->validate(request(), [
-            'name' => 'required',
+            'title' => 'required',
         ]);
         
         $id = $request->input('id');
 
-        $contact = Contact::find($id);
+        $blog = BlogManager::find($id);
 
-        $contact->name = $request->input('name');
-        $contact->email = $request->input('email');
-        $contact->phone = $request->input('phone');
-        $contact->message = $request->input('message');
+        if ($request->hasFile('image')) {  
 
-        $contact->save();
+            $mediaId = imageUpload($request->image, $blog->image_id, $this->userId, "uploads/blogImage/"); 
+            
+            $blog->image_id = $mediaId;
+ 
+         }
 
-        return redirect()->route('contact.index')->with('message', 'Contact Updated Successfully');
+        $blog->category_id = $request->input('categoryId');
+        $blog->title = $request->input('title');
+        $blog->slug = urlencode($request->input('title'));
+        $blog->published_by = $request->input('publishedBy');
+        $blog->published_on = $request->input('publishedDate');
+        $blog->description = $request->input('description');
+
+        $blog->save();
+
+        return redirect()->route('blog.index')->with('message', 'Blog Updated Successfully');
     }
 
     /**
@@ -149,8 +172,8 @@ class ContactController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->id;
-        $contact = Contact::find($id);
-        $contact->delete($id);
+        $blog = BlogManager::find($id);
+        $blog->delete($id);
 
         return response()->json([
             'status' => 1,
@@ -173,8 +196,8 @@ class ContactController extends Controller
         if (isset($record) && !empty($record)) {
 
             foreach ($record as $id) {
-                $contact = Contact::find($id);
-                $contact->delete();
+                $blog = BlogManager::find($id);
+                $blog->delete();
             }
         }
 
@@ -201,9 +224,9 @@ class ContactController extends Controller
             foreach ($decoded_data as $values) {
 
                 $id = $values->id;
-                $contact = Contact::find($id);
-                $contact->sortOrder = $values->position;
-                $result = $contact->save();
+                $blog = BlogManager::find($id);
+                $blog->sortOrder = $values->position;
+                $result = $blog->save();
             }
         }
 
@@ -227,9 +250,9 @@ class ContactController extends Controller
         $status = $request->status;
         $id = $request->id;
 
-        $contact = Contact::find($id);
-        $contact->status = $status;
-        $result = $contact->save();
+        $blog = BlogManager::find($id);
+        $blog->status = $status;
+        $result = $blog->save();
 
         if ($result) {
             $response = array('status' => 1, 'message' => 'Status updated', 'response' => '');

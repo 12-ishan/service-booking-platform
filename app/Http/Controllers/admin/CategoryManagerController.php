@@ -4,11 +4,11 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Contact;
+use App\Models\Admin\BlogCategory;
 use Illuminate\Support\Facades\Auth;
 
 
-class ContactController extends Controller
+class CategoryManagerController extends Controller
 {
 
     public function __construct()
@@ -30,12 +30,11 @@ class ContactController extends Controller
     {
         $data = array();
 
-        $data["contact"] = Contact::orderBy('sortOrder')->get();
+        $data["category"] = BlogCategory::orderBy('sortOrder')->get();
       
-
-        $data["pageTitle"] = 'Manage Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.manage')->with($data);
+        $data["pageTitle"] = 'Manage Category';
+        $data["activeMenu"] = 'category Manager';
+        return view('admin.categoryManager.manage')->with($data);
     }
 
     /**
@@ -47,9 +46,9 @@ class ContactController extends Controller
     {
         $data = array();
 
-        $data["pageTitle"] = 'Add Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.create')->with($data);
+        $data["pageTitle"] = 'Add Category';
+        $data["activeMenu"] = 'category Manager';
+        return view('admin.categoryManager.create')->with($data);
     }
 
     /**
@@ -61,25 +60,22 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:contact',
+            'title' => 'required'
         ]);
 
-        $contact = new Contact();
+        $category = new BlogCategory();
 
-        $contact->name = $request->input('name');
-        $contact->email = $request->input('email');
-        $contact->phone = $request->input('phone');
-        $contact->message = $request->input('message');
+        $category->title = $request->input('title');
+        $category->description = $request->input('description');
        
-        $contact->status = 1;
-        $contact->sortOrder = 1;
+        $category->status = 1;
+        $category->sortOrder = 1;
 
-        $contact->increment('sortOrder');
+        $category->increment('sortOrder');
 
-        $contact->save();
+        $category->save();
 
-        return redirect()->route('contact.index')->with('message', 'Contact Added Successfully');
+        return redirect()->route('category.index')->with('message', 'category Added Successfully');
     }
 
     /**
@@ -104,12 +100,12 @@ class ContactController extends Controller
         
         $data = array();
 
-        $data['contact'] = Contact::find($id);
+        $data['category'] = BlogCategory::find($id);
 
         $data["editStatus"] = 1;
-        $data["pageTitle"] = 'Update Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.create')->with($data);
+        $data["pageTitle"] = 'Update Category';
+        $data["activeMenu"] = 'category Manager';
+        return view('admin.categoryManager.create')->with($data);
     }
 
     /**
@@ -123,21 +119,19 @@ class ContactController extends Controller
     {
 
         $this->validate(request(), [
-            'name' => 'required',
+            'title' => 'required',
         ]);
         
         $id = $request->input('id');
 
-        $contact = Contact::find($id);
+        $category = BlogCategory::find($id);
 
-        $contact->name = $request->input('name');
-        $contact->email = $request->input('email');
-        $contact->phone = $request->input('phone');
-        $contact->message = $request->input('message');
+        $category->title = $request->input('title');
+        $category->description = $request->input('description');
 
-        $contact->save();
+        $category->save();
 
-        return redirect()->route('contact.index')->with('message', 'Contact Updated Successfully');
+        return redirect()->route('category.index')->with('message', 'category Updated Successfully');
     }
 
     /**
@@ -149,8 +143,8 @@ class ContactController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->id;
-        $contact = Contact::find($id);
-        $contact->delete($id);
+        $category = BlogCategory::find($id);
+        $category->delete($id);
 
         return response()->json([
             'status' => 1,
@@ -173,8 +167,8 @@ class ContactController extends Controller
         if (isset($record) && !empty($record)) {
 
             foreach ($record as $id) {
-                $contact = Contact::find($id);
-                $contact->delete();
+                $category = BlogCategory::find($id);
+                $category->delete();
             }
         }
 
@@ -201,9 +195,9 @@ class ContactController extends Controller
             foreach ($decoded_data as $values) {
 
                 $id = $values->id;
-                $contact = Contact::find($id);
-                $contact->sortOrder = $values->position;
-                $result = $contact->save();
+                $category = BlogCategory::find($id);
+                $category->sortOrder = $values->position;
+                $result = $category->save();
             }
         }
 
@@ -227,9 +221,9 @@ class ContactController extends Controller
         $status = $request->status;
         $id = $request->id;
 
-        $contact = Contact::find($id);
-        $contact->status = $status;
-        $result = $contact->save();
+        $category = BlogCategory::find($id);
+        $category->status = $status;
+        $result = $category->save();
 
         if ($result) {
             $response = array('status' => 1, 'message' => 'Status updated', 'response' => '');

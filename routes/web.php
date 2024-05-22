@@ -34,6 +34,10 @@ use App\Http\Controllers\admin\ApplicationController;
 use App\Http\Controllers\admin\CouponController;
 use App\Http\Controllers\admin\PaymentHistoryController;
 use App\Http\Controllers\admin\AwardsLevelController;
+use App\Http\Controllers\admin\OurServicesController;
+use App\Http\Controllers\admin\GeneralSettingsController;
+use App\Http\Controllers\admin\CategoryManagerController;
+use App\Http\Controllers\admin\BlogManagerController;
 
 
 
@@ -92,6 +96,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('admin/user/{id}',[UserController::class, 'update'])->name('user.update');
     Route::get('/admin/dashboard',[DashboardController::class, 'home'])->name('dashboard');
 
+
+      //General Settings Routings
+      Route::get('admin/general-settings/contact', [GeneralSettingsController::class, 'contact'])->name('contact');
+      Route::put('admin/generalSettings', [GeneralSettingsController::class, 'updateContact'])->name('updateContact');
+      //General Settings Routings ends
 
       //Program Routings
     
@@ -277,14 +286,32 @@ Route::group(['middleware' => ['auth']], function () {
 
 
          //Contact Routings
-
-    
          Route::post('admin/contact/updateSortorder',[ContactController:: class,  'updateSortorder']);
          Route::post('admin/contact/destroyAll',[ContactController:: class,  'destroyAll']);
          Route::post('admin/contact/updateStatus',[ContactController:: class,  'updateStatus']);
          Route::resource('admin/contact',ContactController::class);
-     
          //Contact Routings ends
+
+           //Our Services Routings
+           Route::post('admin/ourServices/updateSortorder',[OurServicesController:: class,  'updateSortorder']);
+           Route::post('admin/ourServices/destroyAll',[OurServicesController:: class,  'destroyAll']);
+           Route::post('admin/ourServices/updateStatus',[OurServicesController:: class,  'updateStatus']);
+           Route::resource('admin/our-services',OurServicesController::class);
+           //Our Services ends
+
+             //Category Manager Routings
+             Route::post('admin/category/updateSortorder',[CategoryManagerController:: class,  'updateSortorder']);
+             Route::post('admin/category/destroyAll',[CategoryManagerController:: class,  'destroyAll']);
+             Route::post('admin/category/updateStatus',[CategoryManagerController:: class,  'updateStatus']);
+             Route::resource('admin/category',CategoryManagerController::class);
+             //Category Manager ends
+
+                //Blog Manager Routings
+                Route::post('admin/blog/updateSortorder',[BlogManagerController:: class,  'updateSortorder']);
+                Route::post('admin/blog/destroyAll',[BlogManagerController:: class,  'destroyAll']);
+                Route::post('admin/blog/updateStatus',[BlogManagerController:: class,  'updateStatus']);
+                Route::resource('admin/blog',BlogManagerController::class);
+                //Blog Manager ends
 
          //Role Routings
          Route::post('admin/role/updateSortorder',[RoleController::class,  'updateSortorder']);
