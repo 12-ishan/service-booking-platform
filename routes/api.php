@@ -8,6 +8,7 @@ use App\Http\Controllers\api\v1\GeneralSettingController;
 use App\Http\Controllers\api\v1\BlogController;
 use App\Http\Controllers\api\v1\BlogDetailsController;
 use App\Http\Controllers\api\v1\BlogPaginationController;
+use App\Http\Controllers\api\v1\RazorpayPaymentController;
 
 
 
@@ -36,5 +37,10 @@ Route::post('/v1/get-blogs', [BlogController::class, 'index']);
 Route::post('/v1/get-blog-details', [BlogDetailsController::class, 'index'])->name('blogDetails');
 
 Route::post('/v1/blog-load-more', [BlogPaginationController::class, 'index']);
+
+
+
+Route::post('/v1/create-order', [RazorpayPaymentController::class, 'createOrder']);
+Route::post('/v1/store-payment', [RazorpayPaymentController::class, 'storePayment']);
 
 

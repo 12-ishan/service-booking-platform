@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\View;
 
 use Illuminate\Support\ServiceProvider;
+use Razorpay\Api\Api;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(Api::class, function ($app) {
+            return new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
+        });
     }
 
     /**
