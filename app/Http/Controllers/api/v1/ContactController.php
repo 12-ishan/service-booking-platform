@@ -24,11 +24,6 @@ class ContactController extends Controller
             return response()->json(['message' => 'Validation failed', 'errors' => $errors], 422);
         }
 
-       // $checkContact = Contact::where('email', $request->email)->first();
-      
-        
-          
-
         $contact = new Contact();
 
         $contact->name = $request->input('name');

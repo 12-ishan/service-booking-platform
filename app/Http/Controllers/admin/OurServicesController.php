@@ -32,7 +32,6 @@ class OurServicesController extends Controller
 
         $data["ourServices"] = OurServices::orderBy('sortOrder')->get();
       
-
         $data["pageTitle"] = 'Manage Services';
         $data["activeMenu"] = 'ourServices';
         return view('admin.ourServices.manage')->with($data);
@@ -61,7 +60,9 @@ class OurServicesController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'title' => 'required'
+            'title' => 'required',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required'
         ]);
 
         $ourServices = new OurServices();
@@ -129,6 +130,8 @@ class OurServicesController extends Controller
 
         $this->validate(request(), [
             'title' => 'required',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required'
         ]);
         
         $id = $request->input('id');

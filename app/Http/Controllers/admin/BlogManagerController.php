@@ -64,7 +64,10 @@ class BlogManagerController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'title' => 'required'
+            'title' => 'required',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+           
+            
         ]);
 
         $blog = new BlogManager();
@@ -137,6 +140,8 @@ class BlogManagerController extends Controller
 
         $this->validate(request(), [
             'title' => 'required',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+           
         ]);
         
         $id = $request->input('id');

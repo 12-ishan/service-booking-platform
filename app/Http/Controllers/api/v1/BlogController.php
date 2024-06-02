@@ -21,9 +21,6 @@ class BlogController extends Controller
         $blogs = BlogManager::skip($offset)
             ->take($maxRecordsOnPage)
             ->get();
-            // echo '<pre>';
-            // print_r($blogs);
-            // die();
 
         $data = [];
 

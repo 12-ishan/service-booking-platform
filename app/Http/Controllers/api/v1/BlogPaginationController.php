@@ -21,9 +21,6 @@ class BlogPaginationController extends Controller
         $blogs = BlogManager::skip($offset)
             ->take($maxRecordsOnPage)
             ->get();
-            // echo '<pre>';
-            // print_r($blogs);
-            // die();
 
         $data = [];
 

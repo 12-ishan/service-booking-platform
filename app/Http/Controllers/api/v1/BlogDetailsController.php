@@ -11,9 +11,6 @@ class BlogDetailsController extends Controller
 {
     public function index(Request $request)
     {
-        // echo '<pre>';
-        // print_r($request->all());
-        // die();
         $checkBlog = BlogManager::where('slug', $request->slug)->first();
 
         if (empty($checkBlog)) {
