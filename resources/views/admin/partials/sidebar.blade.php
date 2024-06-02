@@ -173,6 +173,25 @@
                     </li>
                     <?php */ ?>
 
+                @if(isset(Auth::user()->roleId))
+                @if(Auth::user()->roleId == 1)
+
+                <li @if(isset($activeMenu)) @if($activeMenu=='generalSettings' ) class="active" @endif @endif>
+                    <a href="javascript:void(0)" aria-expanded="true"><i
+                            class="ti-layout-sidebar-left"></i><span>General Settings
+                        </span></a>
+
+
+                    <ul class="collapse">
+                       
+                        <li><a href="{{ url('/admin/general-settings/contact') }}">Contact</a></li>
+
+
+                    </ul>
+                </li>
+                @endif
+                @endif
+
                     @if(isset(Auth::user()->roleId))
                     @if(Auth::user()->roleId == 1)
 
@@ -386,6 +405,48 @@
 
                     </li>
 
+                    <li @if(isset($activeMenu)) @if($activeMenu=='ourServices' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Our Services
+                            </span></a>
+
+
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/our-services') }}">Manage Services</a></li>
+                            <li><a href="{{ url('/admin/our-services/create') }}">Add Services</a></li>
+
+
+                        </ul>
+                    </li>
+
+                    <li @if(isset($activeMenu)) @if($activeMenu=='category Manager' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>category Manager
+                            </span></a>
+
+
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/category') }}">Manage Category</a></li>
+                            <li><a href="{{ url('/admin/category/create') }}">Add Category</a></li>
+
+
+                        </ul>
+                    </li>
+
+                    <li @if(isset($activeMenu)) @if($activeMenu=='blog Manager' ) class="active" @endif @endif>
+                        <a href="javascript:void(0)" aria-expanded="true"><i
+                                class="ti-layout-sidebar-left"></i><span>Blog Manager
+                            </span></a>
+
+
+                        <ul class="collapse">
+                            <li><a href="{{ url('/admin/blog') }}">Manage Blog</a></li>
+                            <li><a href="{{ url('/admin/blog/create') }}">Add Blog</a></li>
+
+
+                        </ul>
+                    </li>
+
                     <li @if(isset($activeMenu)) @if($activeMenu=='teacher-class' ) class="active" @endif @endif>
                         <a href="javascript:void(0)" aria-expanded="true"><i
                                 class="ti-layout-sidebar-left"></i><span>Class Teacher MGMT
@@ -418,6 +479,8 @@
                     </li>
                     @endif
                     @endif
+
+
  
                     @if(isset(Auth::user()->roleId))
                     @if(Auth::user()->roleId == 2)

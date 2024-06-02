@@ -4,11 +4,11 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Contact;
+use App\Models\Admin\OurServices;
 use Illuminate\Support\Facades\Auth;
 
 
-class ContactController extends Controller
+class OurServicesController extends Controller
 {
 
     public function __construct()
@@ -30,12 +30,11 @@ class ContactController extends Controller
     {
         $data = array();
 
-        $data["contact"] = Contact::orderBy('sortOrder')->get();
+        $data["ourServices"] = OurServices::orderBy('sortOrder')->get();
       
-
-        $data["pageTitle"] = 'Manage Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.manage')->with($data);
+        $data["pageTitle"] = 'Manage Services';
+        $data["activeMenu"] = 'ourServices';
+        return view('admin.ourServices.manage')->with($data);
     }
 
     /**
@@ -47,9 +46,9 @@ class ContactController extends Controller
     {
         $data = array();
 
-        $data["pageTitle"] = 'Add Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.create')->with($data);
+        $data["pageTitle"] = 'Add Services';
+        $data["activeMenu"] = 'ourServices';
+        return view('admin.ourServices.create')->with($data);
     }
 
     /**
@@ -61,25 +60,32 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $this->validate(request(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:contact',
+            'title' => 'required',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required'
         ]);
 
-        $contact = new Contact();
+        $ourServices = new OurServices();
 
-        $contact->name = $request->input('name');
-        $contact->email = $request->input('email');
-        $contact->phone = $request->input('phone');
-        $contact->message = $request->input('message');
+        if ($request->hasFile('image')) {  
+
+            $mediaId = imageUpload($request->image, $ourServices->imageId, $this->userId, "uploads/services/"); 
+           
+            $ourServices->imageId = $mediaId;
+ 
+         }
+
+        $ourServices->title = $request->input('title');
+        $ourServices->description = $request->input('description');
        
-        $contact->status = 1;
-        $contact->sortOrder = 1;
+        $ourServices->status = 1;
+        $ourServices->sortOrder = 1;
 
-        $contact->increment('sortOrder');
+        $ourServices->increment('sortOrder');
 
-        $contact->save();
+        $ourServices->save();
 
-        return redirect()->route('contact.index')->with('message', 'Contact Added Successfully');
+        return redirect()->route('our-services.index')->with('message', 'our Services Added Successfully');
     }
 
     /**
@@ -104,12 +110,12 @@ class ContactController extends Controller
         
         $data = array();
 
-        $data['contact'] = Contact::find($id);
+        $data['ourServices'] = OurServices::find($id);
 
         $data["editStatus"] = 1;
-        $data["pageTitle"] = 'Update Contact';
-        $data["activeMenu"] = 'contact';
-        return view('admin.contact.create')->with($data);
+        $data["pageTitle"] = 'Update Our Services';
+        $data["activeMenu"] = 'ourServices';
+        return view('admin.ourServices.create')->with($data);
     }
 
     /**
@@ -123,21 +129,29 @@ class ContactController extends Controller
     {
 
         $this->validate(request(), [
-            'name' => 'required',
+            'title' => 'required',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'required'
         ]);
         
         $id = $request->input('id');
 
-        $contact = Contact::find($id);
+        $ourServices = OurServices::find($id);
 
-        $contact->name = $request->input('name');
-        $contact->email = $request->input('email');
-        $contact->phone = $request->input('phone');
-        $contact->message = $request->input('message');
+        if ($request->hasFile('image')) {  
 
-        $contact->save();
+            $mediaId = imageUpload($request->image, $ourServices->imageId, $this->userId, "uploads/services/"); 
+            
+            $ourServices->imageId = $mediaId;
+ 
+         }
 
-        return redirect()->route('contact.index')->with('message', 'Contact Updated Successfully');
+        $ourServices->title = $request->input('title');
+        $ourServices->description = $request->input('description');
+
+        $ourServices->save();
+
+        return redirect()->route('our-services.index')->with('message', 'our Services Updated Successfully');
     }
 
     /**
@@ -149,8 +163,8 @@ class ContactController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->id;
-        $contact = Contact::find($id);
-        $contact->delete($id);
+        $ourServices = OurServices::find($id);
+        $ourServices->delete($id);
 
         return response()->json([
             'status' => 1,
@@ -173,8 +187,8 @@ class ContactController extends Controller
         if (isset($record) && !empty($record)) {
 
             foreach ($record as $id) {
-                $contact = Contact::find($id);
-                $contact->delete();
+                $ourServices = OurServices::find($id);
+                $ourServices->delete();
             }
         }
 
@@ -201,9 +215,9 @@ class ContactController extends Controller
             foreach ($decoded_data as $values) {
 
                 $id = $values->id;
-                $contact = Contact::find($id);
-                $contact->sortOrder = $values->position;
-                $result = $contact->save();
+                $ourServices = OurServices::find($id);
+                $ourServices->sortOrder = $values->position;
+                $result = $ourServices->save();
             }
         }
 
@@ -227,9 +241,9 @@ class ContactController extends Controller
         $status = $request->status;
         $id = $request->id;
 
-        $contact = Contact::find($id);
-        $contact->status = $status;
-        $result = $contact->save();
+        $ourServices = OurServices::find($id);
+        $ourServices->status = $status;
+        $result = $ourServices->save();
 
         if ($result) {
             $response = array('status' => 1, 'message' => 'Status updated', 'response' => '');

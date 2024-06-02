@@ -15,7 +15,7 @@
 
                         <!-- <h4 class="header-title">Basic form</h4> -->
 
-                        <form id="contactForm" method="post" action="@if(isset($editStatus)){{ route('contact.update', $contact->id) }} @else {{ route('contact.store')}}@endif" enctype='multipart/form-data'>
+                        <form id="ourServicesForm" method="post" action="@if(isset($editStatus)){{ route('our-services.update', $ourServices->id) }} @else {{ route('our-services.store')}}@endif" enctype='multipart/form-data'>
 
                             {{ csrf_field() }}
 
@@ -39,37 +39,35 @@
 
                                 <div class="col-6 mt-5">
                                     <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{old('name',  isset($contact->name) ? $contact->name : NULL)}}">
+                                        <label for="name">Image</label>
+                                        <input type="file" name="image" class="form-control">
                                     </div>
                                 </div>
+
+
+                                @if(isset($ourServices->image->name))
+                                <div class="col-12 mt-6">
+                                    <div class="upload-image">
+                                        <img width="100" height="60" src=" {{ URL::to('/') }}/uploads/services/{{ $ourServices->image->name }}" alt="image">
+                                    </div>
+                                </div>
+                                @endif
 
                                 <div class="col-6 mt-5">
                                     <div class="form-group">
-                                        <label for="phone">Phone Number</label>
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone" value="{{old('phone',  isset($contact->phone) ? $contact->phone : NULL)}}">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value="{{old('title',  isset($ourServices->title) ? $ourServices->title : NULL)}}">
                                     </div>
                                 </div>
-
                                 <div class="col-6 mt-5">
                                     <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{old('email',  isset($contact->email) ? $contact->email : NULL)}}">
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <div class="row">
-                                <div class="col-12 mt-10">
-                                    <div class="form-group">
-                                        <label for="message">Message</label>
-                                        <textarea class="form-control ckeditor" id="message" name="message" placeholder="Enter Message">{{old('message', isset($contact->message) ? $contact->message : NULL)}}</textarea>
+                                        <label for="description">Description</label>
+                                        <input type="text" class="form-control" id="description" name="description" placeholder="Enter description" value="{{old('description',  isset($ourServices->description) ? $ourServices->description : NULL)}}">
                                     </div>
                                 </div>
                             </div>
-                            @if(isset($contact->id))
-                            <input type="hidden" name="id" value="{{ $contact->id }}">
+                            @if(isset($ourServices->id))
+                            <input type="hidden" name="id" value="{{ $ourServices->id }}">
                             @endif
                            
                             <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save</button>
@@ -83,7 +81,7 @@
 </div>
 
 @section('js')
-<script src="{{ asset('assets/admin/js/console/contact.js') }}"></script>
+<script src="{{ asset('assets/admin/js/console/ourServices.js') }}"></script>
 @append
 
 @endsection
